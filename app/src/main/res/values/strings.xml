@@ -5,4 +5,5 @@
     <string name="open_deeplink">Open Deeplink</string>
     <string name="activity_not_found_exception_msg">No app exists for the deeplink</string>
     <string name="input_placeholder">deeplink://</string>
+    <string name="clear_input">Clear input</string>
 </resources>
