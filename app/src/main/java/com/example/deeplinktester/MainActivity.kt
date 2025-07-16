@@ -39,6 +39,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
@@ -76,7 +77,7 @@ fun App() {
         modifier = Modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
-                title = { Text("Deeplink Tester") },
+                title = { Text(stringResource(R.string.app_name)) },
             )
         },
         snackbarHost = { SnackbarHost(snackbarHostState) }
@@ -123,7 +124,7 @@ fun Input(
             onValueChange = { text ->
                 value = text
             },
-            placeholder = { Text("deeplink://") },
+            placeholder = { Text(stringResource(R.string.input_placeholder)) },
             modifier = Modifier.fillMaxWidth(),
         )
         Spacer(Modifier.height(8.dp))
@@ -135,12 +136,17 @@ fun Input(
                 try {
                     ctx.startActivity(Intent(Intent.ACTION_VIEW, value.toUri()))
                 } catch (_: ActivityNotFoundException) {
-                    showSnackbar("No app exists for the deeplink")
+                    showSnackbar(
+                        ctx.resources.getString(
+                            R.string
+                                .activity_not_found_exception_msg
+                        )
+                    )
                 }
             }),
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Open Deeplink")
+            Text(stringResource(R.string.open_deeplink))
         }
     }
 }
@@ -186,7 +192,7 @@ fun DeeplinkItem(
         ) {
             Icon(
                 painter = painterResource(R.drawable.content_copy),
-                contentDescription = "Copy deeplink",
+                contentDescription = stringResource(R.string.copy_deeplink),
             )
         }
         IconButton(
@@ -194,7 +200,7 @@ fun DeeplinkItem(
         ) {
             Icon(
                 painter = painterResource(R.drawable.delete),
-                contentDescription = "Delete deeplink",
+                contentDescription = stringResource(R.string.delete_deeplink),
             )
         }
     }
