@@ -87,7 +87,7 @@ fun App() {
                 .padding(horizontal = 16.dp)
         ) {
             Input(
-                showSnackbar = {message ->
+                showSnackbar = { message ->
                     scope.launch {
                         snackbarHostState.showSnackbar(
                             message = message
