@@ -3,6 +3,7 @@ package com.example.deeplinktester
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -40,9 +41,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
@@ -202,6 +205,8 @@ fun DeeplinkItem(
     deeplink: String,
     modifier: Modifier = Modifier,
 ) {
+    val clipboardManager = LocalClipboardManager.current
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier,
@@ -212,7 +217,13 @@ fun DeeplinkItem(
             style = MaterialTheme.typography.bodyMedium
         )
         IconButton(
-            onClick = {},
+            onClick = {
+                // Only show a toast for Android 12 and lower.
+                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) {
+                    // showToast()
+                }
+                clipboardManager.setText(AnnotatedString(deeplink))
+            },
         ) {
             Icon(
                 painter = painterResource(R.drawable.content_copy),
