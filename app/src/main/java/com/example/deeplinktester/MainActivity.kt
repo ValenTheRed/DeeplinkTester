@@ -102,6 +102,9 @@ fun App(
                             message = message
                         )
                     }
+                },
+                onOpenDeeplink = { deeplink ->
+                    historyViewModel.push(deeplink)
                 }
             )
             HorizontalDivider(
@@ -115,6 +118,7 @@ fun App(
 @Composable
 fun Input(
     showSnackbar: (message: String) -> Unit,
+    onOpenDeeplink: (deeplink: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var value by remember { mutableStateOf("") }
@@ -154,6 +158,7 @@ fun Input(
                 }
                 try {
                     ctx.startActivity(Intent(Intent.ACTION_VIEW, value.toUri()))
+                    onOpenDeeplink(value)
                 } catch (_: ActivityNotFoundException) {
                     showSnackbar(
                         ctx.resources.getString(
