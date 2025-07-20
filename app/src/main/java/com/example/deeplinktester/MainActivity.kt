@@ -78,7 +78,7 @@ class MainActivity : ComponentActivity() {
 @Preview(showBackground = true)
 @Composable
 fun App(
-    historyViewModel: HistoryViewModel = viewModel()
+    historyViewModel: HistoryViewModel = viewModel(),
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
@@ -93,19 +93,20 @@ fun App(
         },
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
+        val showSnackbar: (String) -> Unit = { message: String ->
+            scope.launch {
+                snackbarHostState.showSnackbar(
+                    message = message
+                )
+            }
+        }
         Column(
             modifier = Modifier
                 .padding(innerPadding)
                 .padding(horizontal = 16.dp)
         ) {
             Input(
-                showSnackbar = { message ->
-                    scope.launch {
-                        snackbarHostState.showSnackbar(
-                            message = message
-                        )
-                    }
-                },
+                showSnackbar = showSnackbar,
                 onOpenDeeplink = { deeplink ->
                     historyViewModel.push(deeplink)
                 }
@@ -113,14 +114,14 @@ fun App(
             HorizontalDivider(
                 modifier = Modifier.padding(vertical = 12.dp)
             )
-            HistoryList(historyUiState.list)
+            HistoryList(historyUiState.list, showSnackbar)
         }
     }
 }
 
 @Composable
 fun Input(
-    showSnackbar: (message: String) -> Unit,
+    showSnackbar: (String) -> Unit,
     onOpenDeeplink: (deeplink: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -181,6 +182,7 @@ fun Input(
 @Composable
 fun HistoryList(
     data: List<String>,
+    showSnackbar: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
@@ -194,7 +196,7 @@ fun HistoryList(
             )
         }
         items(data) { d ->
-            DeeplinkItem(d)
+            DeeplinkItem(d, showSnackbar)
         }
     }
 }
@@ -203,9 +205,11 @@ fun HistoryList(
 @Composable
 fun DeeplinkItem(
     deeplink: String,
+    showSnackbar: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val clipboardManager = LocalClipboardManager.current
+    val ctx = LocalContext.current
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -220,7 +224,7 @@ fun DeeplinkItem(
             onClick = {
                 // Only show a toast for Android 12 and lower.
                 if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) {
-                    // showToast()
+                    showSnackbar(ctx.resources.getString(R.string.deeplink_copied))
                 }
                 clipboardManager.setText(AnnotatedString(deeplink))
             },
