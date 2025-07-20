@@ -17,7 +17,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Button
@@ -114,7 +114,11 @@ fun App(
             HorizontalDivider(
                 modifier = Modifier.padding(vertical = 12.dp)
             )
-            HistoryList(historyUiState.list, showSnackbar)
+            HistoryList(
+                historyUiState.list,
+                { index -> historyViewModel.delete(index) },
+                showSnackbar
+            )
         }
     }
 }
@@ -182,6 +186,7 @@ fun Input(
 @Composable
 fun HistoryList(
     data: List<String>,
+    onDelete: (Int) -> Unit,
     showSnackbar: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -195,8 +200,12 @@ fun HistoryList(
                 style = MaterialTheme.typography.titleLarge
             )
         }
-        items(data) { d ->
-            DeeplinkItem(d, showSnackbar)
+        itemsIndexed(data) { index, d ->
+            DeeplinkItem(
+                deeplink = d,
+                onDelete = { onDelete(index) },
+                showSnackbar
+            )
         }
     }
 }
@@ -205,6 +214,7 @@ fun HistoryList(
 @Composable
 fun DeeplinkItem(
     deeplink: String,
+    onDelete: () -> Unit,
     showSnackbar: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -235,7 +245,7 @@ fun DeeplinkItem(
             )
         }
         IconButton(
-            onClick = {},
+            onClick = onDelete,
         ) {
             Icon(
                 painter = painterResource(R.drawable.delete),

@@ -23,6 +23,14 @@ class HistoryViewModel : ViewModel() {
         }
     }
 
+    fun delete(index: Int) {
+        _uiState.update { state ->
+            val updatedList = state.list.toMutableList()
+            updatedList.removeAt(index)
+            state.copy(updatedList)
+        }
+    }
+
     init {
         resetHistory()
     }
