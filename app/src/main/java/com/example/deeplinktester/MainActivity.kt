@@ -32,6 +32,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -48,6 +49,8 @@ import androidx.core.net.toUri
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.deeplinktester.ui.HistoryViewModel
 import com.example.deeplinktester.ui.theme.DeeplinkTesterTheme
 import com.example.deeplinktester.utils.debounce
 import kotlinx.coroutines.launch
@@ -71,9 +74,12 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
-fun App() {
+fun App(
+    historyViewModel: HistoryViewModel = viewModel()
+) {
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
+    val historyUiState by historyViewModel.uiState.collectAsState()
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -101,11 +107,7 @@ fun App() {
             HorizontalDivider(
                 modifier = Modifier.padding(vertical = 12.dp)
             )
-            HistoryList(List(15) {
-                "myairtel://app/react?screenName=generic-nav-stack" +
-                        "&selectedPage=paybill_category_landing&subCategory" +
-                        "=electricity"
-            })
+            HistoryList(historyUiState.list)
         }
     }
 }
