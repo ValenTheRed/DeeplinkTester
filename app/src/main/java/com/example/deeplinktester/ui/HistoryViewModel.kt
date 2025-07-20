@@ -19,7 +19,7 @@ class HistoryViewModel : ViewModel() {
         _uiState.update { state ->
             val updatedList = state.list.toMutableList()
             updatedList.add(deeplink)
-            state.copy(updatedList)
+            state.copy(updatedList.toList())
         }
     }
 
@@ -27,7 +27,7 @@ class HistoryViewModel : ViewModel() {
         _uiState.update { state ->
             val updatedList = state.list.toMutableList()
             updatedList.removeAt(index)
-            state.copy(updatedList)
+            state.copy(updatedList.toList())
         }
     }
 
