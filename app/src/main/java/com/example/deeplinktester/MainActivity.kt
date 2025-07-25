@@ -1,6 +1,5 @@
 package com.example.deeplinktester
 
-import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -24,19 +23,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.deeplinktester.data.DataStoreInstance.dataStore
 import com.example.deeplinktester.ui.HistoryViewModel
 import com.example.deeplinktester.ui.components.HistoryList
 import com.example.deeplinktester.ui.components.Input
 import com.example.deeplinktester.ui.theme.DeeplinkTesterTheme
 import kotlinx.coroutines.launch
-
-val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
-    name = "history"
-)
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,7 +37,11 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             DeeplinkTesterTheme {
-                App()
+                App(viewModel {
+                    HistoryViewModel(
+                        dataStore = applicationContext.dataStore,
+                    )
+                })
             }
         }
     }
