@@ -6,17 +6,14 @@ import kotlinx.coroutines.launch
 
 class SnackbarController(
     snackbarHostState: SnackbarHostState,
-    coroutineScope: CoroutineScope
+    coroutineScope: CoroutineScope,
 ) {
     private val hostState = snackbarHostState
     private val scope = coroutineScope
 
     fun show(message: String) {
         scope.launch {
-            hostState.showSnackbar(
-                message = message,
-                withDismissAction = true,
-            )
+            hostState.showSnackbar(message = message, withDismissAction = true)
         }
     }
 }

@@ -40,71 +40,61 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             DeeplinkTesterTheme {
-                App(viewModel {
-                    AppViewModel(
-                        dataStore = applicationContext.dataStore,
-                    )
-                })
+                App(
+                    viewModel {
+                        AppViewModel(dataStore = applicationContext.dataStore)
+                    }
+                )
             }
         }
     }
 }
 
-val ActiveSnackbarController = compositionLocalOf<SnackbarController> {
-    error("No snackbar controller found!")
-}
+val ActiveSnackbarController =
+    compositionLocalOf<SnackbarController> {
+        error("No snackbar controller found!")
+    }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
-fun App(
-    appViewModel: AppViewModel = viewModel(),
-) {
+fun App(appViewModel: AppViewModel = viewModel()) {
     val snackbarHostState = remember { SnackbarHostState() }
     val appUiState by appViewModel.uiState.collectAsState()
-    val controller = SnackbarController(
-        snackbarHostState = snackbarHostState,
-        coroutineScope = rememberCoroutineScope()
-    )
+    val controller =
+        SnackbarController(
+            snackbarHostState = snackbarHostState,
+            coroutineScope = rememberCoroutineScope(),
+        )
 
-    CompositionLocalProvider(
-        ActiveSnackbarController provides controller
-    ) {
+    CompositionLocalProvider(ActiveSnackbarController provides controller) {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             topBar = {
-                TopAppBar(
-                    title = { Text(stringResource(R.string.app_name)) },
-                )
+                TopAppBar(title = { Text(stringResource(R.string.app_name)) })
             },
             snackbarHost = {
                 SnackbarHost(
                     hostState = snackbarHostState,
-                    modifier = Modifier.imePadding()
+                    modifier = Modifier.imePadding(),
                 )
-            }
+            },
         ) { innerPadding ->
-            Column(
-                modifier = Modifier
-                    .padding(innerPadding)
-            ) {
+            Column(modifier = Modifier.padding(innerPadding)) {
                 Input(
                     onOpenDeeplink = { deeplink ->
                         appViewModel.push(deeplink)
                     },
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
+                    modifier = Modifier.padding(horizontal = 16.dp),
                 )
                 HorizontalDivider(
-                    modifier = Modifier.padding(
-                        vertical = 12.dp,
-                        horizontal = 16.dp
-                    )
+                    modifier =
+                        Modifier.padding(vertical = 12.dp, horizontal = 16.dp)
                 )
                 HistoryList(
                     appUiState.list,
                     { index -> appViewModel.delete(index) },
-                    paddingFromEdge = 16.dp
+                    paddingFromEdge = 16.dp,
                 )
             }
         }

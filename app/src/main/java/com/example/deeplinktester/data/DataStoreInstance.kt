@@ -7,9 +7,8 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 
 object DataStoreInstance {
-    val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
-        name = "store"
-    )
+    val Context.dataStore: DataStore<Preferences> by
+        preferencesDataStore(name = "store")
 
     val HISTORY_LIST = stringPreferencesKey("history")
 }

@@ -19,7 +19,7 @@ fun HistoryList(
     paddingFromEdge: Dp = 0.dp,
     modifier: Modifier = Modifier,
 ) {
-    LazyColumn (
+    LazyColumn(
         modifier = modifier,
     ) {
         item(key = "history_heading") {

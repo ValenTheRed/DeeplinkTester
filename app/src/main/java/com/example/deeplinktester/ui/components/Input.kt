@@ -44,8 +44,10 @@ fun Input(
             onValueChange = {
                 value = it
             },
-            placeholder = { Text(
-                text = stringResource(R.string.input_placeholder))
+            placeholder = {
+                Text(
+                    text = stringResource(R.string.input_placeholder)
+                )
             },
             modifier = Modifier.fillMaxWidth(),
             trailingIcon = {
