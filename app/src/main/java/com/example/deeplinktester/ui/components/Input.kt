@@ -14,6 +14,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -25,20 +29,21 @@ import com.example.deeplinktester.utils.debounce
 
 @Composable
 fun Input(
-    value: String,
-    onValueChange: (String) -> Unit,
     onOpenDeeplink: (deeplink: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val ctx = LocalContext.current
     val snackbar = ActiveSnackbarController.current
+    var value by rememberSaveable { mutableStateOf("https") }
 
     Column(
         modifier = modifier,
     ) {
         TextField(
             value = value,
-            onValueChange = onValueChange,
+            onValueChange = {
+                value = it
+            },
             placeholder = { Text(
                 text = stringResource(R.string.input_placeholder))
             },
@@ -46,7 +51,7 @@ fun Input(
             trailingIcon = {
                 IconButton(
                     onClick = {
-                        onValueChange("")
+                        value = ""
                     },
                 ) {
                     Icon(

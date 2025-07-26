@@ -1,8 +1,5 @@
 package com.example.deeplinktester.ui
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
@@ -25,8 +22,6 @@ class AppViewModel(
     private val _dataStore = dataStore
     val uiState: StateFlow<HistoryUiState>
         get() = _uiState.asStateFlow()
-    var inputValue by mutableStateOf("https://google.com")
-        private set
 
     init {
         viewModelScope.launch {
@@ -38,10 +33,6 @@ class AppViewModel(
                 }
             }
         }
-    }
-
-    fun updateInputValue(value: String) {
-        inputValue = value
     }
 
     fun push(deeplink: String) {
