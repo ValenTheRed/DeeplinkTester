@@ -34,6 +34,7 @@ fun HistoryList(
                 deeplink = d,
                 onDelete = { onDelete(index) },
                 paddingFromEdge = paddingFromEdge,
+                modifier = Modifier.animateItem(),
             )
         }
     }
