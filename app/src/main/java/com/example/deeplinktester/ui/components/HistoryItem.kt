@@ -2,8 +2,12 @@ package com.example.deeplinktester.ui.components
 
 import android.content.Intent
 import android.os.Build
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -11,38 +15,52 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import com.example.deeplinktester.ActiveSnackbarController
 import com.example.deeplinktester.R
+import java.nio.file.WatchEvent
 
 @Composable
 fun HistoryItem(
     deeplink: String,
     onDelete: () -> Unit,
+    paddingFromEdge: Dp = 0.dp,
     modifier: Modifier = Modifier,
 ) {
     val clipboardManager = LocalClipboardManager.current
     val ctx = LocalContext.current
     val snackbar = ActiveSnackbarController.current
 
-    Row (
+    Row(
         verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
         modifier = modifier.clickable(
             enabled = true,
             onClick = {
                 ctx.startActivity(Intent(Intent.ACTION_VIEW, deeplink.toUri()))
             }
-        ),
+        )
     ) {
         Text(
             text = deeplink,
-            modifier = Modifier.weight(1f),
-            style = MaterialTheme.typography.bodyMedium
+            modifier = Modifier
+                .weight(1f)
+                .padding(
+                    start = paddingFromEdge,
+                    end = 8.dp,
+                    top = 8.dp,
+                    bottom = 8.dp
+                ),
+            style = MaterialTheme.typography.bodyMedium,
         )
         IconButton (
             onClick = {
@@ -52,19 +70,22 @@ fun HistoryItem(
                 }
                 clipboardManager.setText(AnnotatedString(deeplink))
             },
+            modifier = Modifier
+                .padding(end = paddingFromEdge)
+                .size(40.dp),
         ) {
             Icon(
                 painter = painterResource(R.drawable.content_copy),
                 contentDescription = stringResource(R.string.copy_deeplink),
             )
         }
-        IconButton(
-            onClick = onDelete,
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.delete),
-                contentDescription = stringResource(R.string.delete_deeplink),
-            )
-        }
+//        IconButton(
+//            onClick = onDelete,
+//        ) {
+//            Icon(
+//                painter = painterResource(R.drawable.delete),
+//                contentDescription = stringResource(R.string.delete_deeplink),
+//            )
+//        }
     }
 }

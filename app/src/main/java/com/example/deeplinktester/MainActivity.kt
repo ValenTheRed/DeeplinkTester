@@ -87,19 +87,24 @@ fun App(
             Column(
                 modifier = Modifier
                     .padding(innerPadding)
-                    .padding(horizontal = 16.dp)
             ) {
                 Input(
                     onOpenDeeplink = { deeplink ->
                         appViewModel.push(deeplink)
-                    }
+                    },
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
                 )
                 HorizontalDivider(
-                    modifier = Modifier.padding(vertical = 12.dp)
+                    modifier = Modifier.padding(
+                        vertical = 12.dp,
+                        horizontal = 16.dp
+                    )
                 )
                 HistoryList(
                     appUiState.list,
                     { index -> appViewModel.delete(index) },
+                    paddingFromEdge = 16.dp
                 )
             }
         }
