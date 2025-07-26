@@ -1,6 +1,8 @@
 package com.example.deeplinktester.ui.components
 
+import android.content.Intent
 import android.os.Build
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -14,6 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
+import androidx.core.net.toUri
 import com.example.deeplinktester.ActiveSnackbarController
 import com.example.deeplinktester.R
 
@@ -29,7 +32,12 @@ fun HistoryItem(
 
     Row (
         verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier,
+        modifier = modifier.clickable(
+            enabled = true,
+            onClick = {
+                ctx.startActivity(Intent(Intent.ACTION_VIEW, deeplink.toUri()))
+            }
+        ),
     ) {
         Text(
             text = deeplink,
