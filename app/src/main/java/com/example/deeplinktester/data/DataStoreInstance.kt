@@ -2,7 +2,6 @@ package com.example.deeplinktester.data
 
 import android.content.Context
 import androidx.datastore.core.DataStore
-import androidx.datastore.dataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -10,9 +9,8 @@ import androidx.datastore.preferences.preferencesDataStore
 import com.example.deeplinktester.ui.HistoryUiState
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.single
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.serializer
-import kotlin.let
 
 object DataStoreInstance {
     val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
