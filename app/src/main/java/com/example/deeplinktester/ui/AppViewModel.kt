@@ -1,5 +1,8 @@
 package com.example.deeplinktester.ui
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
@@ -16,23 +19,29 @@ import kotlinx.serialization.json.Json
 
 class AppViewModel(
     dataStore: DataStore<Preferences>,
-    initialUiState: AppUiState = AppUiState(),
+    initialUiState: HistoryUiState = HistoryUiState(),
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(initialUiState)
     private val _dataStore = dataStore
-    val uiState: StateFlow<AppUiState>
+    val uiState: StateFlow<HistoryUiState>
         get() = _uiState.asStateFlow()
+    var inputValue by mutableStateOf("https://google.com")
+        private set
 
     init {
         viewModelScope.launch {
             _dataStore.data.collect { store ->
                 store[HISTORY_LIST]?.let { history ->
                     _uiState.update { state ->
-                        state.copy(list = Json.decodeFromString<List<String>>(history))
+                        Json.decodeFromString<HistoryUiState>(history)
                     }
                 }
             }
         }
+    }
+
+    fun updateInputValue(value: String) {
+        inputValue = value
     }
 
     fun push(deeplink: String) {
@@ -56,7 +65,7 @@ class AppViewModel(
     fun saveHistory() {
         viewModelScope.launch {
             _dataStore.edit { store ->
-                store[HISTORY_LIST] = Json.encodeToString(_uiState.value.list)
+                store[HISTORY_LIST] = Json.encodeToString(_uiState.value)
             }
         }
     }

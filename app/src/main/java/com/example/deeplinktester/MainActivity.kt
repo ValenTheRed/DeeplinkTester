@@ -79,6 +79,8 @@ fun App(
                 .padding(horizontal = 16.dp)
         ) {
             Input(
+                value = appViewModel.inputValue,
+                onValueChange = appViewModel::updateInputValue,
                 showSnackbar = showSnackbar,
                 onOpenDeeplink = { deeplink ->
                     appViewModel.push(deeplink)

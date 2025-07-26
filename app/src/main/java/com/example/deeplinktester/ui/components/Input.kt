@@ -28,11 +28,12 @@ import com.example.deeplinktester.utils.debounce
 
 @Composable
 fun Input(
+    value: String,
+    onValueChange: (String) -> Unit,
     showSnackbar: (String) -> Unit,
     onOpenDeeplink: (deeplink: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var value by remember { mutableStateOf("https://google.com") }
     val ctx = LocalContext.current
 
     Column(
@@ -40,9 +41,7 @@ fun Input(
     ) {
         TextField(
             value = value,
-            onValueChange = { text ->
-                value = text
-            },
+            onValueChange = onValueChange,
             placeholder = { Text(
                 text = stringResource(R.string.input_placeholder))
             },
@@ -50,7 +49,7 @@ fun Input(
             trailingIcon = {
                 IconButton(
                     onClick = {
-                        value = ""
+                        onValueChange("")
                     },
                 ) {
                     Icon(
