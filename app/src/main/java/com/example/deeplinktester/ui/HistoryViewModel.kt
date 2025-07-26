@@ -8,8 +8,6 @@ import com.example.deeplinktester.data.DataStoreInstance.HISTORY_LIST
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
@@ -19,17 +17,18 @@ class HistoryViewModel(
     initialUiState: HistoryUiState = HistoryUiState(),
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(initialUiState)
+    private val _dataStore = dataStore
     val uiState: StateFlow<HistoryUiState>
         get() = _uiState.asStateFlow()
 
     init {
         viewModelScope.launch {
-            _uiState.update {
-                dataStore.data.map { store ->
-                    store[HISTORY_LIST]?.let {
-                        Json.decodeFromString<HistoryUiState>(it)
+            _dataStore.data.collect { store ->
+                store[HISTORY_LIST]?.let { history ->
+                    _uiState.update {
+                        Json.decodeFromString<HistoryUiState>(history)
                     }
-                }.single() ?: initialUiState
+                }
             }
         }
     }
