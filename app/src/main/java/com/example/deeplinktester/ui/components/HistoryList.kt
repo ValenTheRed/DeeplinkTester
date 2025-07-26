@@ -13,7 +13,6 @@ import androidx.compose.ui.unit.dp
 fun HistoryList(
     data: List<String>,
     onDelete: (Int) -> Unit,
-    showSnackbar: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn (
@@ -30,7 +29,6 @@ fun HistoryList(
             HistoryItem(
                 deeplink = d,
                 onDelete = { onDelete(index) },
-                showSnackbar
             )
         }
     }

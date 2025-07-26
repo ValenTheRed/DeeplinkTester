@@ -14,17 +14,18 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
+import com.example.deeplinktester.ActiveSnackbarController
 import com.example.deeplinktester.R
 
 @Composable
 fun HistoryItem(
     deeplink: String,
     onDelete: () -> Unit,
-    showSnackbar: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val clipboardManager = LocalClipboardManager.current
     val ctx = LocalContext.current
+    val snackbar = ActiveSnackbarController.current
 
     Row (
         verticalAlignment = Alignment.CenterVertically,
@@ -39,7 +40,7 @@ fun HistoryItem(
             onClick = {
                 // Only show a toast for Android 12 and lower.
                 if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) {
-                    showSnackbar(ctx.resources.getString(R.string.deeplink_copied))
+                    snackbar.show(ctx.resources.getString(R.string.deeplink_copied))
                 }
                 clipboardManager.setText(AnnotatedString(deeplink))
             },

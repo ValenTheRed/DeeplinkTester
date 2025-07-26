@@ -15,7 +15,9 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -26,10 +28,10 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.deeplinktester.data.DataStoreInstance.dataStore
 import com.example.deeplinktester.ui.AppViewModel
+import com.example.deeplinktester.ui.SnackbarController
 import com.example.deeplinktester.ui.components.HistoryList
 import com.example.deeplinktester.ui.components.Input
 import com.example.deeplinktester.ui.theme.DeeplinkTesterTheme
-import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,6 +49,10 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+val ActiveSnackbarController = compositionLocalOf<SnackbarController> {
+    error("No snackbar controller found!")
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
@@ -54,46 +60,44 @@ fun App(
     appViewModel: AppViewModel = viewModel(),
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
-    val scope = rememberCoroutineScope()
     val appUiState by appViewModel.uiState.collectAsState()
+    val controller = SnackbarController(
+        snackbarHostState = snackbarHostState,
+        coroutineScope = rememberCoroutineScope()
+    )
 
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        topBar = {
-            TopAppBar(
-                title = { Text(stringResource(R.string.app_name)) },
-            )
-        },
-        snackbarHost = { SnackbarHost(snackbarHostState) }
-    ) { innerPadding ->
-        val showSnackbar: (String) -> Unit = { message: String ->
-            scope.launch {
-                snackbarHostState.showSnackbar(
-                    message = message
+    CompositionLocalProvider(
+        ActiveSnackbarController provides controller
+    ) {
+        Scaffold(
+            modifier = Modifier.fillMaxSize(),
+            topBar = {
+                TopAppBar(
+                    title = { Text(stringResource(R.string.app_name)) },
+                )
+            },
+            snackbarHost = { SnackbarHost(snackbarHostState) }
+        ) { innerPadding ->
+            Column(
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .padding(horizontal = 16.dp)
+            ) {
+                Input(
+                    value = appViewModel.inputValue,
+                    onValueChange = appViewModel::updateInputValue,
+                    onOpenDeeplink = { deeplink ->
+                        appViewModel.push(deeplink)
+                    }
+                )
+                HorizontalDivider(
+                    modifier = Modifier.padding(vertical = 12.dp)
+                )
+                HistoryList(
+                    appUiState.list,
+                    { index -> appViewModel.delete(index) },
                 )
             }
-        }
-        Column(
-            modifier = Modifier
-                .padding(innerPadding)
-                .padding(horizontal = 16.dp)
-        ) {
-            Input(
-                value = appViewModel.inputValue,
-                onValueChange = appViewModel::updateInputValue,
-                showSnackbar = showSnackbar,
-                onOpenDeeplink = { deeplink ->
-                    appViewModel.push(deeplink)
-                }
-            )
-            HorizontalDivider(
-                modifier = Modifier.padding(vertical = 12.dp)
-            )
-            HistoryList(
-                appUiState.list,
-                { index -> appViewModel.delete(index) },
-                showSnackbar
-            )
         }
     }
 }
