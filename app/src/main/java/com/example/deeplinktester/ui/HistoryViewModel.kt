@@ -41,11 +41,7 @@ class HistoryViewModel(
             updatedList.add(deeplink)
             state.copy(updatedList.toList())
         }
-        viewModelScope.launch {
-            _dataStore.edit { store ->
-                store[HISTORY_LIST] = Json.encodeToString(_uiState.value)
-            }
-        }
+        saveHistory()
     }
 
     fun delete(index: Int) {
@@ -53,6 +49,15 @@ class HistoryViewModel(
             val updatedList = state.list.toMutableList()
             updatedList.removeAt(index)
             state.copy(updatedList.toList())
+        }
+        saveHistory()
+    }
+
+    fun saveHistory() {
+        viewModelScope.launch {
+            _dataStore.edit { store ->
+                store[HISTORY_LIST] = Json.encodeToString(_uiState.value)
+            }
         }
     }
 }
