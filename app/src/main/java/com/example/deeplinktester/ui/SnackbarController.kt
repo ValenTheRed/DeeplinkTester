@@ -14,7 +14,8 @@ class SnackbarController(
     fun show(message: String) {
         scope.launch {
             hostState.showSnackbar(
-                message = message
+                message = message,
+                withDismissAction = true,
             )
         }
     }
