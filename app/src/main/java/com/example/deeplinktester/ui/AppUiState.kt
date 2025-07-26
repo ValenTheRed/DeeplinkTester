@@ -3,6 +3,7 @@ package com.example.deeplinktester.ui
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class HistoryUiState(
-    val list: List<String> = emptyList()
+data class AppUiState(
+    val list: List<String> = emptyList(),
+    val input: String = "",
 )

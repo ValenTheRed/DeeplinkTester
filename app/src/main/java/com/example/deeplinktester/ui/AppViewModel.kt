@@ -14,21 +14,21 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-class HistoryViewModel(
+class AppViewModel(
     dataStore: DataStore<Preferences>,
-    initialUiState: HistoryUiState = HistoryUiState(),
+    initialUiState: AppUiState = AppUiState(),
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(initialUiState)
     private val _dataStore = dataStore
-    val uiState: StateFlow<HistoryUiState>
+    val uiState: StateFlow<AppUiState>
         get() = _uiState.asStateFlow()
 
     init {
         viewModelScope.launch {
             _dataStore.data.collect { store ->
                 store[HISTORY_LIST]?.let { history ->
-                    _uiState.update {
-                        Json.decodeFromString<HistoryUiState>(history)
+                    _uiState.update { state ->
+                        state.copy(list = Json.decodeFromString<List<String>>(history))
                     }
                 }
             }
@@ -39,7 +39,7 @@ class HistoryViewModel(
         _uiState.update { state ->
             val updatedList = state.list.toMutableList()
             updatedList.add(deeplink)
-            state.copy(updatedList.toList())
+            state.copy(list = updatedList.toList())
         }
         saveHistory()
     }
@@ -48,7 +48,7 @@ class HistoryViewModel(
         _uiState.update { state ->
             val updatedList = state.list.toMutableList()
             updatedList.removeAt(index)
-            state.copy(updatedList.toList())
+            state.copy(list = updatedList.toList())
         }
         saveHistory()
     }
@@ -56,7 +56,7 @@ class HistoryViewModel(
     fun saveHistory() {
         viewModelScope.launch {
             _dataStore.edit { store ->
-                store[HISTORY_LIST] = Json.encodeToString(_uiState.value)
+                store[HISTORY_LIST] = Json.encodeToString(_uiState.value.list)
             }
         }
     }

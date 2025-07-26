@@ -25,7 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.deeplinktester.data.DataStoreInstance.dataStore
-import com.example.deeplinktester.ui.HistoryViewModel
+import com.example.deeplinktester.ui.AppViewModel
 import com.example.deeplinktester.ui.components.HistoryList
 import com.example.deeplinktester.ui.components.Input
 import com.example.deeplinktester.ui.theme.DeeplinkTesterTheme
@@ -38,7 +38,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             DeeplinkTesterTheme {
                 App(viewModel {
-                    HistoryViewModel(
+                    AppViewModel(
                         dataStore = applicationContext.dataStore,
                     )
                 })
@@ -51,11 +51,11 @@ class MainActivity : ComponentActivity() {
 @Preview(showBackground = true)
 @Composable
 fun App(
-    historyViewModel: HistoryViewModel = viewModel(),
+    appViewModel: AppViewModel = viewModel(),
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
-    val historyUiState by historyViewModel.uiState.collectAsState()
+    val appUiState by appViewModel.uiState.collectAsState()
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -81,15 +81,15 @@ fun App(
             Input(
                 showSnackbar = showSnackbar,
                 onOpenDeeplink = { deeplink ->
-                    historyViewModel.push(deeplink)
+                    appViewModel.push(deeplink)
                 }
             )
             HorizontalDivider(
                 modifier = Modifier.padding(vertical = 12.dp)
             )
             HistoryList(
-                historyUiState.list,
-                { index -> historyViewModel.delete(index) },
+                appUiState.list,
+                { index -> appViewModel.delete(index) },
                 showSnackbar
             )
         }
