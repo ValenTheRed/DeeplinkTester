@@ -22,8 +22,8 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
-import com.example.deeplinktester.ActiveSnackbarController
 import com.example.deeplinktester.R
+import com.example.deeplinktester.ui.screens.ActiveSnackbarController
 
 @Composable
 fun HistoryItem(
