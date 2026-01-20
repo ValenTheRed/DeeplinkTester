@@ -67,7 +67,6 @@ fun HistoryItem(
                 clipboardManager.setText(AnnotatedString(deeplink))
             },
             modifier = Modifier
-                .padding(end = paddingFromEdge)
                 .size(40.dp),
         ) {
             Icon(
@@ -75,13 +74,13 @@ fun HistoryItem(
                 contentDescription = stringResource(R.string.copy_deeplink),
             )
         }
-//        IconButton(
-//            onClick = onDelete,
-//        ) {
-//            Icon(
-//                painter = painterResource(R.drawable.delete),
-//                contentDescription = stringResource(R.string.delete_deeplink),
-//            )
-//        }
+        IconButton(
+            onClick = onDelete,
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.delete),
+                contentDescription = stringResource(R.string.delete_deeplink),
+            )
+        }
     }
 }
