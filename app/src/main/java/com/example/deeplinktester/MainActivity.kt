@@ -87,10 +87,6 @@ fun App(appViewModel: AppViewModel = viewModel()) {
                     },
                     modifier = Modifier.padding(horizontal = 16.dp),
                 )
-                HorizontalDivider(
-                    modifier =
-                        Modifier.padding(vertical = 12.dp, horizontal = 16.dp)
-                )
                 HistoryList(
                     appUiState.list,
                     { index -> appViewModel.delete(index) },
