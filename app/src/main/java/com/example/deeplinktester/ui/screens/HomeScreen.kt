@@ -68,6 +68,7 @@ fun HomeScreen(
                 HistoryList(
                     appUiState.list,
                     { index -> appViewModel.delete(index) },
+                    onSearch = { navHostController.navigate("search") },
                     paddingFromEdge = 16.dp,
                 )
             }

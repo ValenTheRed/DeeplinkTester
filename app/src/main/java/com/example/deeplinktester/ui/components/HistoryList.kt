@@ -24,6 +24,7 @@ import com.example.deeplinktester.R
 fun HistoryList(
     data: List<String>,
     onDelete: (Int) -> Unit,
+    onSearch: () -> Unit,
     paddingFromEdge: Dp = 0.dp,
     modifier: Modifier = Modifier,
 ) {
@@ -43,7 +44,7 @@ fun HistoryList(
                     style = MaterialTheme.typography.titleLarge,
                 )
                 IconButton(
-                    onClick = {},
+                    onClick = onSearch,
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.search),
