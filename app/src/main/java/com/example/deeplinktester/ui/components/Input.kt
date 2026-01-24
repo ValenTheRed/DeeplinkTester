@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Button
@@ -16,11 +18,13 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import com.example.deeplinktester.R
@@ -34,7 +38,24 @@ fun Input(
 ) {
     val ctx = LocalContext.current
     val snackbar = ActiveSnackbarController.current
+    val scope = rememberCoroutineScope()
+
     var value by rememberSaveable { mutableStateOf("") }
+    val onOpen = debounce(coroutineScope = scope) {
+        if (value.trim() == "") {
+            return@debounce
+        }
+        try {
+            ctx.startActivity(Intent(Intent.ACTION_VIEW, value.toUri()))
+            onOpenDeeplink(value)
+        } catch (_: ActivityNotFoundException) {
+            snackbar.show(
+                ctx.resources.getString(
+                    R.string.activity_not_found_exception_msg
+                )
+            )
+        }
+    }
 
     Column(
         modifier = modifier,
@@ -50,6 +71,12 @@ fun Input(
                 )
             },
             modifier = Modifier.fillMaxWidth(),
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Go
+            ),
+            keyboardActions = KeyboardActions(
+                onGo = { onOpen() }
+            ),
             trailingIcon = {
                 if (value.isNotEmpty()) {
                     IconButton(
@@ -69,21 +96,7 @@ fun Input(
         )
         Spacer(Modifier.height(8.dp))
         Button(
-            onClick = debounce(coroutineScope = scope) {
-                if (value.trim() == "") {
-                    return@debounce
-                }
-                try {
-                    ctx.startActivity(Intent(Intent.ACTION_VIEW, value.toUri()))
-                    onOpenDeeplink(value)
-                } catch (_: ActivityNotFoundException) {
-                    snackbar.show(
-                        ctx.resources.getString(
-                            R.string.activity_not_found_exception_msg
-                        )
-                    )
-                }
-            },
+            onClick = onOpen,
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(stringResource(R.string.open_deeplink))
