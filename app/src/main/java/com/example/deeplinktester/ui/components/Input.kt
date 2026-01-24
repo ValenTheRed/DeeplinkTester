@@ -69,7 +69,7 @@ fun Input(
         )
         Spacer(Modifier.height(8.dp))
         Button(
-            onClick = debounce(400, {
+            onClick = debounce(coroutineScope = scope) {
                 if (value.trim() == "") {
                     return@debounce
                 }
@@ -83,7 +83,7 @@ fun Input(
                         )
                     )
                 }
-            }),
+            },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(stringResource(R.string.open_deeplink))
