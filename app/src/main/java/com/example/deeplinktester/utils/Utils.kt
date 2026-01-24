@@ -5,10 +5,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 
-/**
- * A immediate/leading debounce implementation.
- */
+/** A immediate/leading debounce implementation. */
 @Composable
 fun debounce(
     intervalMillis: Long,
@@ -22,4 +21,10 @@ fun debounce(
         }
         lastTimeMillis = currentMillis
     }
+}
+
+fun Modifier.onlyApplyIf(
+    condition: Boolean,
+): Modifier {
+    return if (condition) this else Modifier
 }

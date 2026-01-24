@@ -78,7 +78,7 @@ fun SearchScreen(
                 itemsIndexed(searchResults) { index, link ->
                     HistoryItem(
                         deeplink = link,
-                        onDelete = {},
+                        paddingFromEdge = 16.dp,
                     )
                     if (index < searchResults.size - 1) {
                         HorizontalDivider(

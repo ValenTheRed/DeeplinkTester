@@ -24,11 +24,12 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import com.example.deeplinktester.R
 import com.example.deeplinktester.ui.screens.ActiveSnackbarController
+import com.example.deeplinktester.utils.onlyApplyIf
 
 @Composable
 fun HistoryItem(
     deeplink: String,
-    onDelete: () -> Unit,
+    onDelete: (() -> Unit)? = null,
     paddingFromEdge: Dp = 0.dp,
     modifier: Modifier = Modifier,
 ) {
@@ -67,20 +68,23 @@ fun HistoryItem(
                 clipboardManager.setText(AnnotatedString(deeplink))
             },
             modifier = Modifier
-                .size(40.dp),
+                .size(40.dp)
+                .onlyApplyIf(onDelete != null),
         ) {
             Icon(
                 painter = painterResource(R.drawable.content_copy),
                 contentDescription = stringResource(R.string.copy_deeplink),
             )
         }
-        IconButton(
-            onClick = onDelete,
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.delete),
-                contentDescription = stringResource(R.string.delete_deeplink),
-            )
+        if (onDelete != null) {
+            IconButton(
+                onClick = onDelete,
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.delete),
+                    contentDescription = stringResource(R.string.delete_deeplink),
+                )
+            }
         }
     }
 }
