@@ -72,7 +72,9 @@ fun SearchScreen(
                             searchModel.onSearch(it)
                         },
                         onBack = { navHostController.popBackStack() },
-                        modifier = Modifier.padding(end = 16.dp),
+                        modifier = Modifier.padding(
+                            end = 16.dp, bottom = 16.dp, top = 16.dp
+                        ),
                     )
                 }
                 itemsIndexed(searchResults) { index, link ->
