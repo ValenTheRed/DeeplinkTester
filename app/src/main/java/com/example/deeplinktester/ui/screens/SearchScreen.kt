@@ -114,7 +114,7 @@ fun Search(
         TextField(
             value = query,
             onValueChange = onSearch,
-            placeholder = { Text("Search") },
+            placeholder = { Text(stringResource(R.string.search)) },
             trailingIcon = {
                 if (!query.isEmpty()) {
                     IconButton(
