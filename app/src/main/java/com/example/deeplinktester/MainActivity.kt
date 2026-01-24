@@ -20,7 +20,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.deeplinktester.data.DataStoreInstance.dataStore
-import com.example.deeplinktester.ui.AppViewModel
+import com.example.deeplinktester.ui.HomeModel
 import com.example.deeplinktester.ui.screens.HomeScreen
 import com.example.deeplinktester.ui.screens.SearchScreen
 import com.example.deeplinktester.ui.theme.DeeplinkTesterTheme
@@ -33,7 +33,7 @@ class MainActivity : ComponentActivity() {
             DeeplinkTesterTheme {
                 App(
                     viewModel {
-                        AppViewModel(dataStore = applicationContext.dataStore)
+                        HomeModel(dataStore = applicationContext.dataStore)
                     }
                 )
             }
@@ -44,7 +44,7 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
-fun App(appViewModel: AppViewModel = viewModel()) {
+fun App(homeModel: HomeModel = viewModel()) {
     val navController = rememberNavController()
     // NOTE: without this `Surface`, you can see a white flash inbetween the
     //  transitions.
@@ -69,7 +69,7 @@ fun App(appViewModel: AppViewModel = viewModel()) {
             }
         ) {
             composable("home") {
-                HomeScreen(navController, appViewModel)
+                HomeScreen(navController, homeModel)
             }
             composable("search") {
                 SearchScreen(navController)

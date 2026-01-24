@@ -34,7 +34,7 @@ fun Input(
 ) {
     val ctx = LocalContext.current
     val snackbar = ActiveSnackbarController.current
-    var value by rememberSaveable { mutableStateOf("https://google.com") }
+    var value by rememberSaveable { mutableStateOf("") }
 
     Column(
         modifier = modifier,

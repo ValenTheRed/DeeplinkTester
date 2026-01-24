@@ -22,7 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.deeplinktester.R
-import com.example.deeplinktester.ui.AppViewModel
+import com.example.deeplinktester.ui.HomeModel
 import com.example.deeplinktester.ui.SnackbarController
 import com.example.deeplinktester.ui.components.HistoryList
 import com.example.deeplinktester.ui.components.Input
@@ -36,10 +36,10 @@ val ActiveSnackbarController =
 @Composable
 fun HomeScreen(
     navHostController: NavHostController,
-    appViewModel: AppViewModel,
+    homeModel: HomeModel,
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
-    val appUiState by appViewModel.uiState.collectAsState()
+    val deeplinks by homeModel.deeplinks.collectAsState()
     val controller =
         SnackbarController(
             snackbarHostState = snackbarHostState,
@@ -61,13 +61,13 @@ fun HomeScreen(
             Column(modifier = Modifier.padding(innerPadding)) {
                 Input(
                     onOpenDeeplink = { deeplink ->
-                        appViewModel.push(deeplink)
+                        homeModel.push(deeplink)
                     },
                     modifier = Modifier.padding(horizontal = 16.dp),
                 )
                 HistoryList(
-                    appUiState.list,
-                    { index -> appViewModel.delete(index) },
+                    deeplinks,
+                    { index -> homeModel.delete(index) },
                     onSearch = { navHostController.navigate("search") },
                     paddingFromEdge = 16.dp,
                 )
