@@ -51,17 +51,19 @@ fun Input(
             },
             modifier = Modifier.fillMaxWidth(),
             trailingIcon = {
-                IconButton(
-                    onClick = {
-                        value = ""
-                    },
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Clear,
-                        contentDescription = stringResource(
-                            R.string.clear_input
-                        ),
-                    )
+                if (value.isNotEmpty()) {
+                    IconButton(
+                        onClick = {
+                            value = ""
+                        },
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Clear,
+                            contentDescription = stringResource(
+                                R.string.clear_input
+                            ),
+                        )
+                    }
                 }
             }
         )
