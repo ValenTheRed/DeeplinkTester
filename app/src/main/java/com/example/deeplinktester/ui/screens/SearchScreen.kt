@@ -24,12 +24,10 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,6 +36,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.deeplinktester.R
+import com.example.deeplinktester.ui.SearchModel
 import com.example.deeplinktester.ui.SnackbarController
 import com.example.deeplinktester.ui.components.HistoryItem
 
@@ -45,14 +44,10 @@ import com.example.deeplinktester.ui.components.HistoryItem
 @Composable
 fun SearchScreen(
     navHostController: NavHostController,
+    searchModel: SearchModel,
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
-    var query by rememberSaveable { mutableStateOf("") }
-    val searchResults by rememberSaveable {
-        mutableStateOf(
-            emptyList<String>()
-        )
-    }
+    val searchResults by searchModel.searchResults.collectAsState()
 
     val controller =
         SnackbarController(
@@ -72,8 +67,10 @@ fun SearchScreen(
             LazyColumn(modifier = Modifier.padding(innerPadding)) {
                 item(key = "search_input") {
                     Search(
-                        query = query,
-                        onSearch = { query = it },
+                        query = searchModel.query,
+                        onSearch = {
+                            searchModel.onSearch(it)
+                        },
                         onBack = { navHostController.popBackStack() },
                         modifier = Modifier.padding(end = 16.dp),
                     )

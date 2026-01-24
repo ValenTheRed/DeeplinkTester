@@ -21,6 +21,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.deeplinktester.data.DataStoreInstance.dataStore
 import com.example.deeplinktester.ui.HomeModel
+import com.example.deeplinktester.ui.SearchModel
 import com.example.deeplinktester.ui.screens.HomeScreen
 import com.example.deeplinktester.ui.screens.SearchScreen
 import com.example.deeplinktester.ui.theme.DeeplinkTesterTheme
@@ -31,11 +32,16 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             DeeplinkTesterTheme {
-                App(
-                    viewModel {
-                        HomeModel(dataStore = applicationContext.dataStore)
-                    }
-                )
+                val homeModel = viewModel {
+                    HomeModel(dataStore = applicationContext.dataStore)
+                }
+                val searchModel = viewModel {
+                    SearchModel(
+                        dataStore = applicationContext.dataStore,
+                        deeplinks = homeModel.deeplinks
+                    )
+                }
+                App(homeModel, searchModel)
             }
         }
     }
@@ -44,11 +50,14 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
-fun App(homeModel: HomeModel = viewModel()) {
+fun App(
+    homeModel: HomeModel = viewModel(),
+    searchModel: SearchModel = viewModel()
+) {
     val navController = rememberNavController()
     // NOTE: without this `Surface`, you can see a white flash inbetween the
     //  transitions.
-    Surface (
+    Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
@@ -72,7 +81,7 @@ fun App(homeModel: HomeModel = viewModel()) {
                 HomeScreen(navController, homeModel)
             }
             composable("search") {
-                SearchScreen(navController)
+                SearchScreen(navController, searchModel)
             }
         }
     }

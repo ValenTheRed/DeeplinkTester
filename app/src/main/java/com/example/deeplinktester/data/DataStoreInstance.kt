@@ -11,4 +11,5 @@ object DataStoreInstance {
         preferencesDataStore(name = "store")
 
     val DEEPLINKS_LIST = stringPreferencesKey("deeplinks_list")
+    val SEARCH_HISTORY = stringPreferencesKey("search_history")
 }
