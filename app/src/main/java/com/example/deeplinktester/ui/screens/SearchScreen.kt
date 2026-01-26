@@ -63,6 +63,9 @@ fun SearchScreen(
                     onSearch = {
                         searchModel.onSearch(it)
                     },
+                    onKeyboardAction = {
+                        searchModel.push(it)
+                    },
                     onBack = { navHostController.popBackStack() },
                     modifier = Modifier
                         .padding(vertical = Density.Small)
@@ -90,6 +93,7 @@ fun SearchScreen(
 fun Search(
     query: String,
     onSearch: (String) -> Unit,
+    onKeyboardAction: (String) -> Unit,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -131,7 +135,10 @@ fun Search(
                 imeAction = ImeAction.Search
             ),
             keyboardActions = KeyboardActions(
-                onSearch = { onSearch(query) }
+                onSearch = {
+                    onSearch(query)
+                    onKeyboardAction(query)
+                }
             ),
             modifier = Modifier.fillMaxWidth()
         )

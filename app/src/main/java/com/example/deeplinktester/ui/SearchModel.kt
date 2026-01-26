@@ -13,7 +13,6 @@ import com.example.deeplinktester.data.DataStoreInstance.SEARCH_HISTORY
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -29,20 +28,24 @@ class SearchModel(
 ) : ViewModel() {
     private val _dataStore = dataStore
     private val _searchHistory = MutableStateFlow(initialSearchHistory)
-    val searchHistory: StateFlow<SearchHistory>
-        get() = _searchHistory.asStateFlow()
     var query by mutableStateOf("")
         private set
 
-    val searchResults: StateFlow<Deeplinks> = snapshotFlow { query }
-        .combine(deeplinks) { q, links ->
-            if (q.isBlank()) emptyList()
-            else links.filter { it.contains(q, ignoreCase = true) }
-        }.stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(5_000),
-            emptyList()
-        )
+    val searchResults: StateFlow<Deeplinks> = combine(
+        snapshotFlow { query },
+        deeplinks,
+        _searchHistory
+    ) { q, links, history ->
+        if (q.isBlank()) {
+            history
+        } else {
+            links.filter { it.contains(q, ignoreCase = true) }
+        }
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(5_000),
+        emptyList()
+    )
 
     init {
         viewModelScope.launch {
@@ -60,10 +63,10 @@ class SearchModel(
         query = value
     }
 
-    fun push(deeplink: String) {
+    fun push(query: String) {
         _searchHistory.update { state ->
             val updatedList = state.toMutableList()
-            updatedList.add(deeplink)
+            updatedList.add(query)
             updatedList
         }
         saveHistory()
