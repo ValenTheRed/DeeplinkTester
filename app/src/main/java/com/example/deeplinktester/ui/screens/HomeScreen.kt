@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -18,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import com.example.deeplinktester.R
@@ -25,6 +28,7 @@ import com.example.deeplinktester.ui.HomeModel
 import com.example.deeplinktester.ui.SnackbarController
 import com.example.deeplinktester.ui.components.HistoryList
 import com.example.deeplinktester.ui.components.Input
+import com.example.deeplinktester.ui.theme.Density
 import com.example.deeplinktester.ui.theme.appEdgePadding
 
 val ActiveSnackbarController =
@@ -49,9 +53,22 @@ fun HomeScreen(
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             topBar = {
-                Column {
+                Column(
+                    modifier = Modifier.padding(bottom = Density.Small)
+                ) {
                     TopAppBar(
-                        title = { Text(stringResource(R.string.app_name)) }
+                        title = { Text(stringResource(R.string.app_name)) },
+                        actions = {
+                            IconButton(
+                                onClick = { navHostController.navigate("search") },
+                            ) {
+                                Icon(
+                                    painter = painterResource(R.drawable.search),
+                                    contentDescription = stringResource(R.string.search_deeplinks),
+                                )
+                            }
+
+                        }
                     )
                     Input(
                         onOpenDeeplink = { deeplink ->
@@ -69,9 +86,8 @@ fun HomeScreen(
             },
         ) { innerPadding ->
             HistoryList(
-                deeplinks,
-                { index -> homeModel.delete(index) },
-                onSearch = { navHostController.navigate("search") },
+                data = deeplinks,
+                onDelete = { index -> homeModel.delete(index) },
                 modifier = Modifier.padding(innerPadding),
             )
         }
