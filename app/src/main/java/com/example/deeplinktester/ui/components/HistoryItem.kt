@@ -2,6 +2,7 @@ package com.example.deeplinktester.ui.components
 
 import android.content.Intent
 import android.os.Build
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -40,12 +41,19 @@ fun HistoryItem(
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = modifier.clickable(
-            enabled = true,
-            onClick = {
-                ctx.startActivity(Intent(Intent.ACTION_VIEW, deeplink.toUri()))
-            }
-        )
+        modifier = modifier
+            .clickable(
+                enabled = true,
+                onClick = {
+                    ctx.startActivity(
+                        Intent(
+                            Intent.ACTION_VIEW,
+                            deeplink.toUri()
+                        )
+                    )
+                }
+            )
+            .background(MaterialTheme.colorScheme.primaryContainer),
     ) {
         Text(
             text = deeplink,

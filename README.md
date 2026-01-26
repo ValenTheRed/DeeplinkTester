@@ -11,4 +11,4 @@
         1. delete > deeplinks become checkbox selectable > delete the required one
     4. restrict deeplinks to a set amount of lines. Introduce a chevron button inplace of copy/delete to expand/collapse the deeplink.
         1. remove delete and place the chevron to left of copy? Hide/show chevron only for required deeplinks?
-    5. wrap the whole list in a card ala One UI 7 lists in contacts app
+    5. [x] wrap the whole list in a card ala One UI 7 lists in contacts app

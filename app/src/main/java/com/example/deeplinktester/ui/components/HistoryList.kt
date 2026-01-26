@@ -14,11 +14,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.deeplinktester.R
+import com.example.deeplinktester.ui.theme.Density
+import com.example.deeplinktester.ui.theme.Shapes
 
 @Composable
 fun HistoryList(
@@ -29,7 +32,9 @@ fun HistoryList(
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
-        modifier = modifier,
+        modifier = modifier
+            .padding(horizontal = Density.Large)
+            .clip(MaterialTheme.shapes.large),
     ) {
         item(key = "history_heading") {
             Row(
@@ -37,7 +42,6 @@ fun HistoryList(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = paddingFromEdge)
             ) {
                 Text(
                     text = stringResource(R.string.history_title),
@@ -58,12 +62,20 @@ fun HistoryList(
                 deeplink = d,
                 onDelete = { onDelete(index) },
                 paddingFromEdge = paddingFromEdge,
-                modifier = Modifier.animateItem(),
+                modifier = Modifier
+                    .animateItem()
+                    .clip(
+                        when (index) {
+                            0 -> Shapes.FirstListItem
+                            data.size - 1 -> Shapes.LastListItem
+                            else -> MaterialTheme.shapes.extraSmall
+                        }
+                    )
             )
             if (index < data.size - 1) {
                 HorizontalDivider(
-                    thickness = 1.dp,
-                    modifier = Modifier.padding(horizontal = paddingFromEdge)
+                    thickness = Density.ExtraExtraSmall,
+                    color = MaterialTheme.colorScheme.background,
                 )
             }
         }

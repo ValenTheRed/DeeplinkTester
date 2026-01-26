@@ -1,5 +1,6 @@
 package com.example.deeplinktester.ui.screens
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,6 +18,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.SnackbarHost
@@ -32,6 +34,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -41,6 +44,8 @@ import com.example.deeplinktester.R
 import com.example.deeplinktester.ui.SearchModel
 import com.example.deeplinktester.ui.SnackbarController
 import com.example.deeplinktester.ui.components.HistoryItem
+import com.example.deeplinktester.ui.theme.Density
+import com.example.deeplinktester.ui.theme.Shapes
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -78,16 +83,28 @@ fun SearchScreen(
                 )
             },
         ) { innerPadding ->
-            LazyColumn(modifier = Modifier.padding(innerPadding)) {
+            LazyColumn(
+                contentPadding = PaddingValues(horizontal = Density.Large),
+                modifier = Modifier.padding(innerPadding)
+            ) {
                 itemsIndexed(searchResults) { index, link ->
                     HistoryItem(
                         deeplink = link,
                         paddingFromEdge = 16.dp,
+                        modifier = Modifier
+                            .animateItem()
+                            .clip(
+                                when (index) {
+                                    0 -> Shapes.FirstListItem
+                                    searchResults.size - 1 -> Shapes.LastListItem
+                                    else -> MaterialTheme.shapes.extraSmall
+                                }
+                            )
                     )
                     if (index < searchResults.size - 1) {
                         HorizontalDivider(
-                            thickness = 1.dp,
-                            modifier = Modifier.padding(horizontal = 0.dp),
+                            thickness = Density.ExtraExtraSmall,
+                            color = MaterialTheme.colorScheme.background,
                         )
                     }
                 }
