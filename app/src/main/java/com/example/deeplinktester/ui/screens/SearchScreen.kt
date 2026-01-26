@@ -6,18 +6,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.SnackbarHost
@@ -33,7 +29,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -41,9 +36,8 @@ import androidx.navigation.NavHostController
 import com.example.deeplinktester.R
 import com.example.deeplinktester.ui.SearchModel
 import com.example.deeplinktester.ui.SnackbarController
-import com.example.deeplinktester.ui.components.HistoryItem
+import com.example.deeplinktester.ui.components.HistoryList
 import com.example.deeplinktester.ui.theme.Density
-import com.example.deeplinktester.ui.theme.Shapes
 import com.example.deeplinktester.ui.theme.appEdgePadding
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -83,32 +77,10 @@ fun SearchScreen(
                 )
             },
         ) { innerPadding ->
-            LazyColumn(
-                modifier = Modifier
-                    .padding(innerPadding)
-                    .appEdgePadding()
-            ) {
-                itemsIndexed(searchResults) { index, link ->
-                    HistoryItem(
-                        deeplink = link,
-                        modifier = Modifier
-                            .animateItem()
-                            .clip(
-                                when (index) {
-                                    0 -> Shapes.FirstListItem
-                                    searchResults.size - 1 -> Shapes.LastListItem
-                                    else -> MaterialTheme.shapes.extraSmall
-                                }
-                            )
-                    )
-                    if (index < searchResults.size - 1) {
-                        HorizontalDivider(
-                            thickness = Density.ExtraExtraSmall,
-                            color = MaterialTheme.colorScheme.background,
-                        )
-                    }
-                }
-            }
+            HistoryList(
+                data = searchResults,
+                modifier = Modifier.padding(innerPadding),
+            )
         }
     }
 }

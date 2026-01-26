@@ -14,8 +14,8 @@ import com.example.deeplinktester.ui.theme.appEdgePadding
 @Composable
 fun HistoryList(
     data: List<String>,
-    onDelete: (Int) -> Unit,
     modifier: Modifier = Modifier,
+    onDelete: ((Int) -> Unit)? = null,
 ) {
     LazyColumn(
         modifier = modifier
@@ -25,7 +25,7 @@ fun HistoryList(
         itemsIndexed(data) { index, d ->
             HistoryItem(
                 deeplink = d,
-                onDelete = { onDelete(index) },
+                onDelete = onDelete?.let { { it(index) } },
                 modifier = Modifier
                     .animateItem()
                     .clip(
