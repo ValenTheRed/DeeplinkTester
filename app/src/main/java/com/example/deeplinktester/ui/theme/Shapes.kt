@@ -18,4 +18,6 @@ object Shapes {
             bottomEnd = Density.Large,
             bottomStart = Density.Large,
         )
+
+    val OnlyListItem = RoundedCornerShape(Density.Large)
 }

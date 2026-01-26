@@ -29,10 +29,14 @@ fun HistoryList(
                 modifier = Modifier
                     .animateItem()
                     .clip(
-                        when (index) {
-                            0 -> Shapes.FirstListItem
-                            data.size - 1 -> Shapes.LastListItem
-                            else -> MaterialTheme.shapes.extraSmall
+                        if (data.size == 1) {
+                            Shapes.OnlyListItem
+                        } else if (index == 0) {
+                            Shapes.FirstListItem
+                        } else if (index == data.size - 1) {
+                            Shapes.LastListItem
+                        } else {
+                            MaterialTheme.shapes.extraSmall
                         }
                     )
             )
