@@ -36,7 +36,7 @@ class SearchModel(
 
     val searchResults: StateFlow<Deeplinks> = snapshotFlow { query }
         .combine(deeplinks) { q, links ->
-            if (q.isBlank()) links
+            if (q.isBlank()) emptyList()
             else links.filter { it.contains(q, ignoreCase = true) }
         }.stateIn(
             viewModelScope,
