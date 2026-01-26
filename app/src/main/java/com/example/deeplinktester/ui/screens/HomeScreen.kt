@@ -49,7 +49,15 @@ fun HomeScreen(
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             topBar = {
-                TopAppBar(title = { Text(stringResource(R.string.app_name)) })
+                Column {
+                    TopAppBar(title = { Text(stringResource(R.string.app_name)) })
+                    Input(
+                        onOpenDeeplink = { deeplink ->
+                            homeModel.push(deeplink)
+                        },
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                    )
+                }
             },
             snackbarHost = {
                 SnackbarHost(
@@ -58,20 +66,13 @@ fun HomeScreen(
                 )
             },
         ) { innerPadding ->
-            Column(modifier = Modifier.padding(innerPadding)) {
-                Input(
-                    onOpenDeeplink = { deeplink ->
-                        homeModel.push(deeplink)
-                    },
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                )
-                HistoryList(
-                    deeplinks,
-                    { index -> homeModel.delete(index) },
-                    onSearch = { navHostController.navigate("search") },
-                    paddingFromEdge = 16.dp,
-                )
-            }
+            HistoryList(
+                deeplinks,
+                { index -> homeModel.delete(index) },
+                onSearch = { navHostController.navigate("search") },
+                paddingFromEdge = 16.dp,
+                modifier = Modifier.padding(innerPadding)
+            )
         }
     }
 }
