@@ -2,8 +2,10 @@ package com.example.deeplinktester.ui.screens
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.text.KeyboardActions
@@ -57,6 +59,18 @@ fun SearchScreen(
     CompositionLocalProvider(ActiveSnackbarController provides controller) {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
+            topBar = {
+                Search(
+                    query = searchModel.query,
+                    onSearch = {
+                        searchModel.onSearch(it)
+                    },
+                    onBack = { navHostController.popBackStack() },
+                    modifier = Modifier
+                        .padding(end = 16.dp, bottom = 16.dp, top = 16.dp)
+                        .statusBarsPadding(),
+                )
+            },
             snackbarHost = {
                 SnackbarHost(
                     hostState = snackbarHostState,
@@ -65,18 +79,6 @@ fun SearchScreen(
             },
         ) { innerPadding ->
             LazyColumn(modifier = Modifier.padding(innerPadding)) {
-                item(key = "search_input") {
-                    Search(
-                        query = searchModel.query,
-                        onSearch = {
-                            searchModel.onSearch(it)
-                        },
-                        onBack = { navHostController.popBackStack() },
-                        modifier = Modifier.padding(
-                            end = 16.dp, bottom = 16.dp, top = 16.dp
-                        ),
-                    )
-                }
                 itemsIndexed(searchResults) { index, link ->
                     HistoryItem(
                         deeplink = link,
@@ -142,7 +144,7 @@ fun Search(
             keyboardActions = KeyboardActions(
                 onSearch = { onSearch(query) }
             ),
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxWidth()
         )
     }
 }
