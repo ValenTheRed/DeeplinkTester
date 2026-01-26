@@ -1,5 +1,7 @@
 package com.example.deeplinktester.ui.theme
 
+import androidx.compose.foundation.layout.padding
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 /**
@@ -12,4 +14,8 @@ object Density {
     val Medium = 12.dp
     val Large = 16.dp
     val ExtraLarge = 28.dp
+}
+
+fun Modifier.appEdgePadding(): Modifier {
+    return this.padding(horizontal = 10.dp)
 }

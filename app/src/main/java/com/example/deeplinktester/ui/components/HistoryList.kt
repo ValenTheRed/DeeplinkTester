@@ -3,7 +3,6 @@ package com.example.deeplinktester.ui.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.HorizontalDivider
@@ -17,23 +16,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import com.example.deeplinktester.R
 import com.example.deeplinktester.ui.theme.Density
 import com.example.deeplinktester.ui.theme.Shapes
+import com.example.deeplinktester.ui.theme.appEdgePadding
 
 @Composable
 fun HistoryList(
     data: List<String>,
     onDelete: (Int) -> Unit,
     onSearch: () -> Unit,
-    paddingFromEdge: Dp = 0.dp,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
         modifier = modifier
-            .padding(horizontal = Density.Large)
+            .appEdgePadding()
             .clip(MaterialTheme.shapes.large),
     ) {
         item(key = "history_heading") {
@@ -61,7 +58,6 @@ fun HistoryList(
             HistoryItem(
                 deeplink = d,
                 onDelete = { onDelete(index) },
-                paddingFromEdge = paddingFromEdge,
                 modifier = Modifier
                     .animateItem()
                     .clip(

@@ -19,13 +19,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.deeplinktester.R
 import com.example.deeplinktester.ui.HomeModel
 import com.example.deeplinktester.ui.SnackbarController
 import com.example.deeplinktester.ui.components.HistoryList
 import com.example.deeplinktester.ui.components.Input
+import com.example.deeplinktester.ui.theme.appEdgePadding
 
 val ActiveSnackbarController =
     compositionLocalOf<SnackbarController> {
@@ -50,12 +50,14 @@ fun HomeScreen(
             modifier = Modifier.fillMaxSize(),
             topBar = {
                 Column {
-                    TopAppBar(title = { Text(stringResource(R.string.app_name)) })
+                    TopAppBar(
+                        title = { Text(stringResource(R.string.app_name)) }
+                    )
                     Input(
                         onOpenDeeplink = { deeplink ->
                             homeModel.push(deeplink)
                         },
-                        modifier = Modifier.padding(horizontal = 16.dp),
+                        modifier = Modifier.appEdgePadding(),
                     )
                 }
             },
@@ -70,8 +72,7 @@ fun HomeScreen(
                 deeplinks,
                 { index -> homeModel.delete(index) },
                 onSearch = { navHostController.navigate("search") },
-                paddingFromEdge = 16.dp,
-                modifier = Modifier.padding(innerPadding)
+                modifier = Modifier.padding(innerPadding),
             )
         }
     }

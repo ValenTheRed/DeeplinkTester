@@ -30,9 +30,8 @@ import com.example.deeplinktester.utils.onlyApplyIf
 @Composable
 fun HistoryItem(
     deeplink: String,
-    onDelete: (() -> Unit)? = null,
-    paddingFromEdge: Dp = 0.dp,
     modifier: Modifier = Modifier,
+    onDelete: (() -> Unit)? = null,
 ) {
     val clipboardManager = LocalClipboardManager.current
     val ctx = LocalContext.current
@@ -60,7 +59,7 @@ fun HistoryItem(
             modifier = Modifier
                 .weight(1f)
                 .padding(
-                    start = paddingFromEdge,
+                    start = 16.dp,
                     end = 8.dp,
                     top = 8.dp,
                     bottom = 8.dp

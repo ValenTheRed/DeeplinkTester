@@ -1,6 +1,5 @@
 package com.example.deeplinktester.ui.screens
 
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -46,6 +45,7 @@ import com.example.deeplinktester.ui.SnackbarController
 import com.example.deeplinktester.ui.components.HistoryItem
 import com.example.deeplinktester.ui.theme.Density
 import com.example.deeplinktester.ui.theme.Shapes
+import com.example.deeplinktester.ui.theme.appEdgePadding
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -72,7 +72,8 @@ fun SearchScreen(
                     },
                     onBack = { navHostController.popBackStack() },
                     modifier = Modifier
-                        .padding(end = 16.dp, bottom = 16.dp, top = 16.dp)
+                        .padding(bottom = 16.dp, top = 16.dp)
+                        .appEdgePadding()
                         .statusBarsPadding(),
                 )
             },
@@ -84,13 +85,13 @@ fun SearchScreen(
             },
         ) { innerPadding ->
             LazyColumn(
-                contentPadding = PaddingValues(horizontal = Density.Large),
-                modifier = Modifier.padding(innerPadding)
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .appEdgePadding()
             ) {
                 itemsIndexed(searchResults) { index, link ->
                     HistoryItem(
                         deeplink = link,
-                        paddingFromEdge = 16.dp,
                         modifier = Modifier
                             .animateItem()
                             .clip(
