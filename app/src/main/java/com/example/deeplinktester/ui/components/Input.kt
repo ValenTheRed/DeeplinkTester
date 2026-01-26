@@ -26,10 +26,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import com.example.deeplinktester.R
 import com.example.deeplinktester.ui.screens.ActiveSnackbarController
+import com.example.deeplinktester.ui.theme.Density
 import com.example.deeplinktester.utils.debounce
 
 @Composable
@@ -95,7 +95,7 @@ fun Input(
                 }
             }
         )
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(Density.Small))
         Button(
             onClick = onOpen,
             modifier = Modifier.fillMaxWidth(),

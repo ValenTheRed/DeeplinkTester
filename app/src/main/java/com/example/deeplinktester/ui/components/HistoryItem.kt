@@ -20,11 +20,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import com.example.deeplinktester.R
 import com.example.deeplinktester.ui.screens.ActiveSnackbarController
+import com.example.deeplinktester.ui.theme.Density
 import com.example.deeplinktester.utils.onlyApplyIf
 
 @Composable
@@ -59,10 +58,10 @@ fun HistoryItem(
             modifier = Modifier
                 .weight(1f)
                 .padding(
-                    start = 16.dp,
-                    end = 8.dp,
-                    top = 8.dp,
-                    bottom = 8.dp
+                    start = Density.Large,
+                    end = Density.Small,
+                    top = Density.Small,
+                    bottom = Density.Small,
                 ),
             style = MaterialTheme.typography.bodyMedium,
         )
@@ -75,7 +74,7 @@ fun HistoryItem(
                 clipboardManager.setText(AnnotatedString(deeplink))
             },
             modifier = Modifier
-                .size(40.dp)
+                .size(Density.IconSize)
                 .onlyApplyIf(onDelete != null),
         ) {
             Icon(
