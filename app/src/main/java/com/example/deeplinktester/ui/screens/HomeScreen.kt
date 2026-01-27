@@ -87,12 +87,12 @@ fun HomeScreen(
             },
         ) { innerPadding ->
             HistoryList(
-                data = deeplinks,
+                data = deeplinks.toList(),
                 modifier = Modifier.padding(innerPadding),
             ) { deeplink, index, modifier ->
                 HistoryItem(
                     deeplink,
-                    onDelete = { homeModel.delete(index) },
+                    onDelete = { homeModel.delete(deeplink) },
                     modifier = modifier
                 )
             }

@@ -15,7 +15,7 @@ import kotlinx.serialization.json.Json
 
 class HomeModel(
     dataStore: DataStore<Preferences>,
-    initialDeeplinks: Deeplinks = emptyList<String>(),
+    initialDeeplinks: Deeplinks = linkedSetOf(),
 ) : ViewModel() {
     private val _deeplinks = MutableStateFlow(initialDeeplinks)
     private val _dataStore = dataStore
@@ -36,18 +36,18 @@ class HomeModel(
 
     fun push(deeplink: String) {
         _deeplinks.update { state ->
-            val updatedList = state.toMutableList()
-            updatedList.add(deeplink)
-            updatedList
+            val deeplinks = Deeplinks(state)
+            deeplinks.add(deeplink)
+            deeplinks
         }
         saveHistory()
     }
 
-    fun delete(index: Int) {
+    fun delete(deeplink: String) {
         _deeplinks.update { state ->
-            val updatedList = state.toMutableList()
-            updatedList.removeAt(index)
-            updatedList
+            val deeplinks = Deeplinks(state)
+            deeplinks.remove(deeplink)
+            deeplinks
         }
         saveHistory()
     }

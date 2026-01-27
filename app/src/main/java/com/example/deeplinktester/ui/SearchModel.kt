@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 
-typealias SearchQueries = List<String>
+typealias SearchQueries = LinkedHashSet<String>
 
 sealed class SearchResults {
     data class Queries(val queries: SearchQueries) : SearchResults()
@@ -30,12 +30,11 @@ sealed class SearchResults {
 class SearchModel(
     dataStore: DataStore<Preferences>,
     deeplinks: StateFlow<Deeplinks>,
-    initialSearchHistory: SearchQueries = emptyList(),
+    initialSearchHistory: SearchQueries = linkedSetOf(),
 ) : ViewModel() {
     private val _dataStore = dataStore
     private val _searchHistory = MutableStateFlow(initialSearchHistory)
     var query by mutableStateOf("")
-        private set
 
     val searchResults: StateFlow<SearchResults> = combine(
         snapshotFlow { query },
@@ -45,7 +44,7 @@ class SearchModel(
         if (q.isBlank()) {
             SearchResults.Queries(history)
         } else {
-            SearchResults.Links(links.filter {
+            SearchResults.Links(links.filterTo(LinkedHashSet()) {
                 it.contains(q, ignoreCase = true)
             })
         }
@@ -73,18 +72,18 @@ class SearchModel(
 
     fun push(query: String) {
         _searchHistory.update { state ->
-            val updatedList = state.toMutableList()
-            updatedList.add(query)
-            updatedList
+            val queries = SearchQueries(state)
+            queries.add(query)
+            queries
         }
         saveHistory()
     }
 
-    fun delete(index: Int) {
+    fun delete(query: String) {
         _searchHistory.update { state ->
-            val updatedList = state.toMutableList()
-            updatedList.removeAt(index)
-            updatedList
+            val queries = SearchQueries(state)
+            queries.remove(query)
+            queries
         }
         saveHistory()
     }

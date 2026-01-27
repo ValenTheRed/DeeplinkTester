@@ -1,9 +1,9 @@
 ## TODO
-1. don’t store duplicate deeplinks
+1. [x] don’t store duplicate deeplinks
 
 ## Maybe TODO
-1. keep a track of search history
-    1. show the search history initially, rather than deeplinks
+1. [x] keep a track of search history
+    1. [x] show the search history initially, rather than deeplinks
         1. don’t show anything at all if search history doesn’t seem right
 2. revamp the UI
     1. replace the ‘Open Deeplink’ button with a inline button in the text input itself

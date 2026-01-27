@@ -1,3 +1,3 @@
 package com.example.deeplinktester.ui
 
-typealias Deeplinks = List<String>
+typealias Deeplinks = LinkedHashSet<String>
