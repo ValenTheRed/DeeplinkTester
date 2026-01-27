@@ -83,25 +83,25 @@ fun SearchScreen(
             },
         ) { innerPadding ->
             val searchResults = searchResults
-            when (searchResults) {
-                SearchResults.Empty -> {}
+            val results = when (searchResults) {
+                SearchResults.Empty -> emptyList()
+                is SearchResults.Links -> searchResults.links
+                is SearchResults.Queries -> searchResults.queries
+            }
+            HistoryList(
+                data = results,
+                modifier = Modifier.padding(innerPadding),
+            ) { result, index, modifier ->
+                when (searchResults) {
+                    SearchResults.Empty -> {}
 
-                is SearchResults.Links -> HistoryList(
-                    data = searchResults.links,
-                    modifier = Modifier.padding(innerPadding),
-                ) { result, index, modifier ->
-                    HistoryItem(
+                    is SearchResults.Links -> HistoryItem(
                         result,
                         modifier = modifier,
                     )
-                }
 
-                is SearchResults.Queries -> HistoryList(
-                    data = searchResults.queries,
-                    modifier = Modifier.padding(innerPadding),
-                ) { query, index, modifier ->
-                    HistoryItem(
-                        query,
+                    is SearchResults.Queries -> HistoryItem(
+                        result,
                         modifier = modifier,
                     )
                 }
