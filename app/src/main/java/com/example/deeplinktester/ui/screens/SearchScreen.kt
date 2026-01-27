@@ -90,7 +90,7 @@ fun SearchScreen(
                 is SearchResults.Queries -> searchResults.queries
             }
             HistoryList(
-                data = results.toList(),
+                data = results.toList().reversed(),
                 modifier = Modifier.padding(innerPadding),
             ) { result, index, modifier ->
                 when (searchResults) {

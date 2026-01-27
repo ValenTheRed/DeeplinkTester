@@ -87,7 +87,7 @@ fun HomeScreen(
             },
         ) { innerPadding ->
             HistoryList(
-                data = deeplinks.toList(),
+                data = deeplinks.toList().reversed(),
                 modifier = Modifier.padding(innerPadding),
             ) { deeplink, index, modifier ->
                 HistoryItem(
