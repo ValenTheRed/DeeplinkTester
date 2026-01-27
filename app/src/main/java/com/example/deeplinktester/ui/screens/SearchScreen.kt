@@ -35,7 +35,9 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.navigation.NavHostController
 import com.example.deeplinktester.R
 import com.example.deeplinktester.ui.SearchModel
+import com.example.deeplinktester.ui.SearchResults
 import com.example.deeplinktester.ui.SnackbarController
+import com.example.deeplinktester.ui.components.HistoryItem
 import com.example.deeplinktester.ui.components.HistoryList
 import com.example.deeplinktester.ui.theme.Density
 import com.example.deeplinktester.ui.theme.appEdgePadding
@@ -80,10 +82,30 @@ fun SearchScreen(
                 )
             },
         ) { innerPadding ->
-            HistoryList(
-                data = searchResults,
-                modifier = Modifier.padding(innerPadding),
-            )
+            val searchResults = searchResults
+            when (searchResults) {
+                SearchResults.Empty -> {}
+
+                is SearchResults.Links -> HistoryList(
+                    data = searchResults.links,
+                    modifier = Modifier.padding(innerPadding),
+                ) { result, index, modifier ->
+                    HistoryItem(
+                        result,
+                        modifier = modifier,
+                    )
+                }
+
+                is SearchResults.Queries -> HistoryList(
+                    data = searchResults.queries,
+                    modifier = Modifier.padding(innerPadding),
+                ) { query, index, modifier ->
+                    HistoryItem(
+                        query,
+                        modifier = modifier,
+                    )
+                }
+            }
         }
     }
 }

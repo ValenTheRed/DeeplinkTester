@@ -26,6 +26,7 @@ import androidx.navigation.NavHostController
 import com.example.deeplinktester.R
 import com.example.deeplinktester.ui.HomeModel
 import com.example.deeplinktester.ui.SnackbarController
+import com.example.deeplinktester.ui.components.HistoryItem
 import com.example.deeplinktester.ui.components.HistoryList
 import com.example.deeplinktester.ui.components.Input
 import com.example.deeplinktester.ui.theme.Density
@@ -87,9 +88,14 @@ fun HomeScreen(
         ) { innerPadding ->
             HistoryList(
                 data = deeplinks,
-                onDelete = { index -> homeModel.delete(index) },
                 modifier = Modifier.padding(innerPadding),
-            )
+            ) { deeplink, index, modifier ->
+                HistoryItem(
+                    deeplink,
+                    onDelete = { homeModel.delete(index) },
+                    modifier = modifier
+                )
+            }
         }
     }
 }

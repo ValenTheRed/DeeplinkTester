@@ -19,32 +19,40 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 
-typealias SearchHistory = List<String>
+typealias SearchQueries = List<String>
+
+sealed class SearchResults {
+    data class Queries(val queries: SearchQueries) : SearchResults()
+    data class Links(val links: Deeplinks) : SearchResults()
+    data object Empty : SearchResults()
+}
 
 class SearchModel(
     dataStore: DataStore<Preferences>,
     deeplinks: StateFlow<Deeplinks>,
-    initialSearchHistory: SearchHistory = emptyList<String>(),
+    initialSearchHistory: SearchQueries = emptyList(),
 ) : ViewModel() {
     private val _dataStore = dataStore
     private val _searchHistory = MutableStateFlow(initialSearchHistory)
     var query by mutableStateOf("")
         private set
 
-    val searchResults: StateFlow<Deeplinks> = combine(
+    val searchResults: StateFlow<SearchResults> = combine(
         snapshotFlow { query },
         deeplinks,
         _searchHistory
     ) { q, links, history ->
         if (q.isBlank()) {
-            history
+            SearchResults.Queries(history)
         } else {
-            links.filter { it.contains(q, ignoreCase = true) }
+            SearchResults.Links(links.filter {
+                it.contains(q, ignoreCase = true)
+            })
         }
     }.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(5_000),
-        emptyList()
+        SearchResults.Empty
     )
 
     init {
