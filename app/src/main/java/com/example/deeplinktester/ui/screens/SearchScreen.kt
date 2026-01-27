@@ -39,6 +39,7 @@ import com.example.deeplinktester.ui.SearchResults
 import com.example.deeplinktester.ui.SnackbarController
 import com.example.deeplinktester.ui.components.HistoryItem
 import com.example.deeplinktester.ui.components.HistoryList
+import com.example.deeplinktester.ui.components.SearchResultQuery
 import com.example.deeplinktester.ui.theme.Density
 import com.example.deeplinktester.ui.theme.appEdgePadding
 
@@ -100,8 +101,10 @@ fun SearchScreen(
                         modifier = modifier,
                     )
 
-                    is SearchResults.Queries -> HistoryItem(
+                    is SearchResults.Queries -> SearchResultQuery(
                         result,
+                        onDelete = { searchModel.delete(index) },
+                        onClick = { searchModel.query = result },
                         modifier = modifier,
                     )
                 }
