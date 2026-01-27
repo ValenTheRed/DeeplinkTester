@@ -1,5 +1,8 @@
 ## TODO
 1. [x] don’t store duplicate deeplinks
+2. [ ] fix Material You not working on samsung devices
+3. [ ] highlight searched substring
+4. [ ] on tapping the search button on the keyboard (`KeyboardActions.onSearch`), input should blur and keyboard should dismiss.
 
 ## Maybe TODO
 1. [x] keep a track of search history
