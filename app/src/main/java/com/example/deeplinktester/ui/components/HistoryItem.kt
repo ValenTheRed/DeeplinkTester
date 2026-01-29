@@ -60,7 +60,10 @@ fun HistoryItem(
     ) {
         val text = if (highlight?.isNotEmpty() == true) {
             buildAnnotatedString {
-                val l = deeplink.split(Regex(highlight), 2)
+                val l = deeplink.split(
+                    Regex(highlight, RegexOption.IGNORE_CASE),
+                    2
+                )
                 append(l[0])
                 withStyle(
                     SpanStyle(
