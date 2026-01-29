@@ -10,8 +10,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -90,7 +88,7 @@ fun Input(
                         },
                     ) {
                         Icon(
-                            imageVector = Icons.Default.Clear,
+                            painterResource(R.drawable.clear),
                             contentDescription = stringResource(
                                 R.string.clear_input
                             ),
