@@ -1,6 +1,7 @@
 ## TODO
 1. [x] don’t store duplicate deeplinks
-2. [ ] fix Material You not working on samsung devices
+2. [x] fix Material You not working on samsung devices
+    - bug in one ui. reapply the color palette and stops working.
 3. [ ] highlight searched substring
 4. [x] on tapping the search button on the keyboard (`KeyboardActions.onSearch`), input should blur and keyboard should dismiss.
 
