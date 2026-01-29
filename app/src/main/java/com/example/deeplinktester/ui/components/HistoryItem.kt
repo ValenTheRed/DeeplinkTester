@@ -20,6 +20,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
 import androidx.core.net.toUri
 import com.example.deeplinktester.R
 import com.example.deeplinktester.ui.screens.ActiveSnackbarController
@@ -30,6 +34,7 @@ import com.example.deeplinktester.utils.onlyApplyIf
 fun HistoryItem(
     deeplink: String,
     modifier: Modifier = Modifier,
+    highlight: String? = null,
     onDelete: (() -> Unit)? = null,
 ) {
     val clipboardManager = LocalClipboardManager.current
@@ -53,8 +58,26 @@ fun HistoryItem(
             )
             .background(MaterialTheme.colorScheme.primaryContainer),
     ) {
+        val text = if (highlight?.isNotEmpty() == true) {
+            buildAnnotatedString {
+                val l = deeplink.split(Regex(highlight), 2)
+                append(l[0])
+                withStyle(
+                    SpanStyle(
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        textDecoration = TextDecoration.Underline,
+                    )
+                ) {
+                    append(highlight)
+                }
+                append(l[1])
+                toAnnotatedString()
+            }
+        } else {
+            AnnotatedString(deeplink)
+        }
         Text(
-            text = deeplink,
+            text = text,
             modifier = Modifier
                 .weight(1f)
                 .padding(

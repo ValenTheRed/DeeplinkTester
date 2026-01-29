@@ -98,7 +98,8 @@ fun SearchScreen(
                     SearchResults.Empty -> {}
 
                     is SearchResults.Links -> HistoryItem(
-                        result,
+                        deeplink = result,
+                        highlight = searchModel.query,
                         modifier = modifier,
                     )
 
