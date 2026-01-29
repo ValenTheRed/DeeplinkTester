@@ -4,6 +4,7 @@
     - bug in one ui. reapply the color palette and stops working.
 3. [x] highlight searched substring
 4. [x] on tapping the search button on the keyboard (`KeyboardActions.onSearch`), input should blur and keyboard should dismiss.
+5. [ ] add a FAB to go to top after scrolling down.
 
 ## Maybe TODO
 1. [x] keep a track of search history
