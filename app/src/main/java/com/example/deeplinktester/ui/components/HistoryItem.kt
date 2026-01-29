@@ -56,7 +56,7 @@ fun HistoryItem(
                     )
                 }
             )
-            .background(MaterialTheme.colorScheme.primaryContainer),
+            .background(MaterialTheme.colorScheme.surfaceContainerHigh),
     ) {
         val text = if (highlight?.isNotEmpty() == true) {
             buildAnnotatedString {
@@ -67,7 +67,7 @@ fun HistoryItem(
                     append(deeplink.substring(0 until startIndex))
                     withStyle(
                         SpanStyle(
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            color = MaterialTheme.colorScheme.surfaceTint,
                             textDecoration = TextDecoration.Underline,
                         )
                     ) {

@@ -37,7 +37,7 @@ fun SearchResultQuery(
                 enabled = true,
                 onClick = onClick
             )
-            .background(MaterialTheme.colorScheme.primaryContainer),
+            .background(MaterialTheme.colorScheme.surfaceContainerHigh),
     ) {
         Text(
             text = query,
