@@ -60,20 +60,24 @@ fun HistoryItem(
     ) {
         val text = if (highlight?.isNotEmpty() == true) {
             buildAnnotatedString {
-                val l = deeplink.split(
+                val parts = deeplink.split(
                     Regex(highlight, RegexOption.IGNORE_CASE),
                     2
                 )
-                append(l[0])
-                withStyle(
-                    SpanStyle(
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        textDecoration = TextDecoration.Underline,
-                    )
-                ) {
-                    append(highlight)
+                if (parts.size != 2) {
+                    append(deeplink)
+                } else {
+                    append(parts[0])
+                    withStyle(
+                        SpanStyle(
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            textDecoration = TextDecoration.Underline,
+                        )
+                    ) {
+                        append(highlight)
+                    }
+                    append(parts[1])
                 }
-                append(l[1])
                 toAnnotatedString()
             }
         } else {
