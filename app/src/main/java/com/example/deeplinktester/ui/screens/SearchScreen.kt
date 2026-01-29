@@ -30,7 +30,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.navigation.NavHostController
 import com.example.deeplinktester.R
 import com.example.deeplinktester.ui.SearchModel
@@ -135,8 +137,11 @@ fun Search(
             )
         }
         TextField(
-            value = query,
-            onValueChange = onSearch,
+            value = TextFieldValue(
+                text = query,
+                selection = TextRange(query.length)
+            ),
+            onValueChange = { onSearch(it.text) },
             placeholder = { Text(stringResource(R.string.search)) },
             trailingIcon = {
                 if (!query.isEmpty()) {
