@@ -1,8 +1,7 @@
 package com.example.deeplinktester.ui
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
@@ -38,10 +37,10 @@ class SearchModel(
 ) : ViewModel() {
     private val _dataStore = dataStore
     private val _searchHistory = MutableStateFlow(initialSearchHistory)
-    var query by mutableStateOf("")
+    val query = TextFieldState()
 
     val searchResults: StateFlow<SearchResults> = combine(
-        snapshotFlow { query },
+        snapshotFlow { query.text },
         deeplinks,
         _searchHistory
     ) { q, links, history ->
@@ -60,7 +59,7 @@ class SearchModel(
 
     fun highlightDeeplink(deeplink: String, style: SpanStyle): AnnotatedString {
         return buildAnnotatedString {
-            val startIndex = deeplink.indexOf(query, ignoreCase = true)
+            val startIndex = deeplink.indexOf(query.text.toString(), ignoreCase = true)
             if (startIndex == -1) {
                 append(deeplink)
             } else {
@@ -68,13 +67,13 @@ class SearchModel(
                 withStyle(style) {
                     append(
                         deeplink.substring(
-                            startIndex until startIndex + query.length
+                            startIndex until startIndex + query.text.length
                         )
                     )
                 }
                 append(
                     deeplink.substring(
-                        startIndex + query.length
+                        startIndex + query.text.length
                     )
                 )
             }
@@ -95,11 +94,12 @@ class SearchModel(
     }
 
     fun onSearch(value: String) {
-        query = value
+        query.setTextAndPlaceCursorAtEnd(value)
     }
 
-    fun push(query: String, index: Int = 0) {
+    fun push(value: String? = null, index: Int = 0) {
         _searchHistory.update { state ->
+            val query = value ?: query.text.toString()
             if (query in state) {
                 state
             }

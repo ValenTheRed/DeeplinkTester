@@ -6,8 +6,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.TextFieldLineLimits
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -31,12 +32,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.navigation.NavHostController
 import com.example.deeplinktester.R
@@ -74,7 +74,7 @@ fun SearchScreen(
                         searchModel.onSearch(it)
                     },
                     onKeyboardAction = {
-                        searchModel.push(it)
+                        searchModel.push()
                     },
                     onBack = { navHostController.popBackStack() },
                     modifier = Modifier
@@ -121,7 +121,7 @@ fun SearchScreen(
                         result,
                         onDelete = { searchModel.delete(result) },
                         onUndo = { searchModel.push(result, index) },
-                        onClick = { searchModel.query = result },
+                        onClick = { searchModel.onSearch(result) },
                         modifier = modifier,
                     )
                 }
@@ -133,13 +133,14 @@ fun SearchScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Search(
-    query: String,
+    query: TextFieldState,
     onSearch: (String) -> Unit,
-    onKeyboardAction: (String) -> Unit,
+    onKeyboardAction: () -> Unit,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val focusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     LaunchedEffect(Unit) {
         focusManager.moveFocus(focusDirection = FocusDirection.Previous)
@@ -157,23 +158,20 @@ fun Search(
             )
         }
         TextField(
-            value = TextFieldValue(
-                text = query,
-                selection = TextRange(query.length)
-            ),
-            onValueChange = { onSearch(it.text) },
+            state = query,
             placeholder = { Text(stringResource(R.string.search)) },
             trailingIcon = {
-                if (!query.isEmpty()) {
-                    IconButton(
-                        onClick = { onSearch("") },
-                    ) {
-                        Icon(
-                            painterResource(R.drawable.clear),
-                            contentDescription =
-                                stringResource(R.string.clear_input),
-                        )
-                    }
+                if (query.text.isEmpty()) {
+                    return@TextField
+                }
+                IconButton(
+                    onClick = { onSearch("") },
+                ) {
+                    Icon(
+                        painterResource(R.drawable.clear),
+                        contentDescription =
+                            stringResource(R.string.clear_input),
+                    )
                 }
             },
             shape = ShapeDefaults.ExtraLarge,
@@ -181,17 +179,14 @@ fun Search(
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent
             ),
-            singleLine = true,
+            lineLimits = TextFieldLineLimits.SingleLine,
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Search
             ),
-            keyboardActions = KeyboardActions(
-                onSearch = {
-                    onSearch(query)
-                    onKeyboardAction(query)
-                    focusManager.clearFocus()
-                }
-            ),
+            onKeyboardAction = {
+                onKeyboardAction()
+                keyboardController?.hide()
+            },
             modifier = Modifier.fillMaxWidth()
         )
     }
