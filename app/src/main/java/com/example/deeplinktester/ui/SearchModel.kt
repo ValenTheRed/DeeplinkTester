@@ -98,11 +98,14 @@ class SearchModel(
         query = value
     }
 
-    fun push(query: String) {
+    fun push(query: String, index: Int = 0) {
         _searchHistory.update { state ->
-            val queries = SearchQueries(state)
-            queries.add(query)
-            queries
+            if (query in state) {
+                state
+            }
+            val list = state.toMutableList()
+            list.add(index, query)
+            LinkedHashSet(list)
         }
         saveHistory()
     }

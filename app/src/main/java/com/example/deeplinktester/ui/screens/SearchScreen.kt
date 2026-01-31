@@ -90,12 +90,12 @@ fun SearchScreen(
         ) { innerPadding ->
             val searchResults = searchResults
             val results = when (searchResults) {
-                SearchResults.Empty -> linkedSetOf()
+                SearchResults.Empty -> listOf()
                 is SearchResults.Links -> searchResults.links
                 is SearchResults.Queries -> searchResults.queries
             }
             HistoryList(
-                data = results.toList().reversed(),
+                data = results,
                 modifier = Modifier.padding(innerPadding),
             ) { result, index, modifier ->
                 when (searchResults) {

@@ -36,20 +36,23 @@ class HomeModel(
         }
     }
 
-    fun push(deeplink: String) {
+    fun push(deeplink: String, index: Int = 0) {
         _deeplinks.update { state ->
-            val deeplinks = Deeplinks(state)
-            deeplinks.add(deeplink)
-            deeplinks
+            if (deeplink in state) {
+                state
+            }
+            val list = state.toMutableList()
+            list.add(index, deeplink)
+            LinkedHashSet(list)
         }
         saveHistory()
     }
 
     fun delete(deeplink: String) {
         _deeplinks.update { state ->
-            val deeplinks = Deeplinks(state)
-            deeplinks.remove(deeplink)
-            deeplinks
+            val links = Deeplinks(state)
+            links.remove(deeplink)
+            links
         }
         saveHistory()
     }

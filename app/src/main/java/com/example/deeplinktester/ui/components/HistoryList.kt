@@ -13,7 +13,7 @@ import com.example.deeplinktester.ui.theme.appEdgePadding
 
 @Composable
 fun HistoryList(
-    data: List<String>,
+    data: Collection<String>,
     modifier: Modifier = Modifier,
     itemContent: @Composable (
         data: String,
@@ -27,7 +27,7 @@ fun HistoryList(
             .clip(MaterialTheme.shapes.large),
     ) {
         itemsIndexed(
-            items = data,
+            items = data.toList(),
             key = { _, v -> v }
         ) { index, d ->
             itemContent(
