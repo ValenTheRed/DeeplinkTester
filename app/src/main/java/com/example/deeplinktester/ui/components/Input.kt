@@ -5,9 +5,11 @@ import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -96,10 +98,10 @@ fun Input(
                     }
             }
         )
-        Spacer(Modifier.width(Density.ExtraSmall))
-        IconButton (
+        Spacer(Modifier.width(Density.Small))
+        FilledIconButton (
             onClick = onOpen,
-            modifier = Modifier.width(Density.IconSize)
+            modifier = Modifier.size(Density.FilledIconSize)
         ) {
             Icon(
                 painterResource(R.drawable.go),
