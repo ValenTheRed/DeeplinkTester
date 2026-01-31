@@ -13,6 +13,7 @@ import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -101,7 +102,8 @@ fun Input(
         Spacer(Modifier.width(Density.Small))
         FilledIconButton (
             onClick = onOpen,
-            modifier = Modifier.size(Density.FilledIconSize)
+            modifier = Modifier.size(Density.FilledIconSize),
+            shape = ShapeDefaults.Large,
         ) {
             Icon(
                 painterResource(R.drawable.go),
