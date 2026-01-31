@@ -99,6 +99,7 @@ fun Input(
         )
         Spacer(Modifier.height(Density.Small))
         Button(
+            enabled = value.isNotEmpty(),
             onClick = onOpen,
             modifier = Modifier.fillMaxWidth(),
             shape = MaterialTheme.shapes.large
