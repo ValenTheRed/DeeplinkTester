@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -32,6 +33,7 @@ fun HistoryItem(
     modifier: Modifier = Modifier,
     highlightedDeeplink: AnnotatedString? = null,
     onDelete: (() -> Unit)? = null,
+    onUndo: (() -> Unit)? = null,
 ) {
     val clipboardManager = LocalClipboardManager.current
     val ctx = LocalContext.current
@@ -87,7 +89,22 @@ fun HistoryItem(
             IconButton(
                 onClick = {
                     onDelete()
-                    snackbar.show(ctx.resources.getString(R.string.deeplink_deleted))
+                    if (onUndo == null) {
+                        snackbar.show(
+                            ctx.resources.getString(R.string.deeplink_deleted),
+                        )
+                    } else {
+                        snackbar.show(
+                            ctx.resources.getString(R.string.deeplink_deleted),
+                            ctx.resources.getString(R.string.undo),
+                            { r ->
+                                when (r) {
+                                    SnackbarResult.Dismissed -> return@show
+                                    SnackbarResult.ActionPerformed -> onUndo()
+                                }
+                            }
+                        )
+                    }
                 },
             ) {
                 Icon(

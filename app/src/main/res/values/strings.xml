@@ -13,4 +13,5 @@
     <string name="search">Search</string>
     <string name="search_query_deleted">Search query deleted.</string>
     <string name="deeplink_deleted">Deeplink deleted.</string>
+    <string name="undo">Undo</string>
 </resources>

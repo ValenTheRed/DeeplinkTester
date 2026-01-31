@@ -119,6 +119,7 @@ fun HomeScreen(
                 HistoryItem(
                     deeplink,
                     onDelete = { homeModel.delete(deeplink) },
+                    onUndo = { homeModel.push(deeplink) },
                     modifier = modifier
                 )
             }
