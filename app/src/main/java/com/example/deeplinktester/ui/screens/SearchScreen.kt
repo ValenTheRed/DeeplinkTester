@@ -44,6 +44,7 @@ import com.example.deeplinktester.ui.SnackbarController
 import com.example.deeplinktester.ui.components.HistoryItem
 import com.example.deeplinktester.ui.components.HistoryList
 import com.example.deeplinktester.ui.components.SearchResultQuery
+import com.example.deeplinktester.ui.theme.AppEdgeType
 import com.example.deeplinktester.ui.theme.Density
 import com.example.deeplinktester.ui.theme.appEdgePadding
 
@@ -76,7 +77,7 @@ fun SearchScreen(
                     onBack = { navHostController.popBackStack() },
                     modifier = Modifier
                         .padding(vertical = Density.Small)
-                        .appEdgePadding()
+                        .appEdgePadding(pad = AppEdgeType.End)
                         .statusBarsPadding(),
                 )
             },
