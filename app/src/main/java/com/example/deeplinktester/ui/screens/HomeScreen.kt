@@ -65,7 +65,7 @@ fun HomeScreen(
             modifier = Modifier.fillMaxSize(),
             topBar = {
                 Column(
-                    modifier = Modifier.padding(bottom = Density.Small)
+                    modifier = Modifier.padding(bottom = Density.Medium)
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
