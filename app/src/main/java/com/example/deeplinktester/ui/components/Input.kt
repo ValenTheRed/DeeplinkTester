@@ -101,6 +101,7 @@ fun Input(
         )
         Spacer(Modifier.width(Density.Small))
         FilledIconButton (
+            enabled = value.isNotBlank(),
             onClick = onOpen,
             modifier = Modifier.size(Density.FilledIconSize),
             shape = ShapeDefaults.Large,
