@@ -4,6 +4,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
@@ -53,6 +57,30 @@ class SearchModel(
         SharingStarted.WhileSubscribed(5_000),
         SearchResults.Empty
     )
+
+    fun highlightDeeplink(deeplink: String, style: SpanStyle): AnnotatedString {
+        return buildAnnotatedString {
+            val startIndex = deeplink.indexOf(query, ignoreCase = true)
+            if (startIndex == -1) {
+                append(deeplink)
+            } else {
+                append(deeplink.substring(0 until startIndex))
+                withStyle(style) {
+                    append(
+                        deeplink.substring(
+                            startIndex until startIndex + query.length
+                        )
+                    )
+                }
+                append(
+                    deeplink.substring(
+                        startIndex + query.length
+                    )
+                )
+            }
+            toAnnotatedString()
+        }
+    }
 
     init {
         viewModelScope.launch {

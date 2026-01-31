@@ -11,6 +11,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.SnackbarHost
@@ -30,9 +31,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.navigation.NavHostController
 import com.example.deeplinktester.R
 import com.example.deeplinktester.ui.SearchModel
@@ -97,11 +100,19 @@ fun SearchScreen(
                 when (searchResults) {
                     SearchResults.Empty -> {}
 
-                    is SearchResults.Links -> HistoryItem(
-                        deeplink = result,
-                        highlight = searchModel.query,
-                        modifier = modifier,
-                    )
+                    is SearchResults.Links -> {
+                        HistoryItem(
+                            deeplink = result,
+                            highlightedDeeplink = searchModel.highlightDeeplink(
+                                result,
+                                SpanStyle(
+                                    color = MaterialTheme.colorScheme.surfaceTint,
+                                    textDecoration = TextDecoration.Underline,
+                                )
+                            ),
+                            modifier = modifier,
+                        )
+                    }
 
                     is SearchResults.Queries -> SearchResultQuery(
                         result,

@@ -20,10 +20,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.text.withStyle
 import androidx.core.net.toUri
 import com.example.deeplinktester.R
 import com.example.deeplinktester.ui.screens.ActiveSnackbarController
@@ -34,7 +30,7 @@ import com.example.deeplinktester.utils.onlyApplyIf
 fun HistoryItem(
     deeplink: String,
     modifier: Modifier = Modifier,
-    highlight: String? = null,
+    highlightedDeeplink: AnnotatedString? = null,
     onDelete: (() -> Unit)? = null,
 ) {
     val clipboardManager = LocalClipboardManager.current
@@ -58,38 +54,8 @@ fun HistoryItem(
             )
             .background(MaterialTheme.colorScheme.surfaceContainerHigh),
     ) {
-        val text = if (highlight?.isNotEmpty() == true) {
-            buildAnnotatedString {
-                val startIndex = deeplink.indexOf(highlight, ignoreCase = true)
-                if (startIndex == -1) {
-                    append(deeplink)
-                } else {
-                    append(deeplink.substring(0 until startIndex))
-                    withStyle(
-                        SpanStyle(
-                            color = MaterialTheme.colorScheme.surfaceTint,
-                            textDecoration = TextDecoration.Underline,
-                        )
-                    ) {
-                        append(
-                            deeplink.substring(
-                                startIndex until startIndex + highlight.length
-                            )
-                        )
-                    }
-                    append(
-                        deeplink.substring(
-                            startIndex + highlight.length
-                        )
-                    )
-                }
-                toAnnotatedString()
-            }
-        } else {
-            AnnotatedString(deeplink)
-        }
         Text(
-            text = text,
+            text = highlightedDeeplink ?: AnnotatedString(deeplink),
             modifier = Modifier
                 .weight(1f)
                 .padding(
