@@ -85,7 +85,10 @@ fun HistoryItem(
         }
         if (onDelete != null) {
             IconButton(
-                onClick = onDelete,
+                onClick = {
+                    onDelete()
+                    snackbar.show(ctx.resources.getString(R.string.deeplink_deleted))
+                },
             ) {
                 Icon(
                     painter = painterResource(R.drawable.delete),
