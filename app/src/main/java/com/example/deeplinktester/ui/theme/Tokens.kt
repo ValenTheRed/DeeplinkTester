@@ -20,5 +20,5 @@ object Density {
 }
 
 fun Modifier.appEdgePadding(): Modifier {
-    return this.padding(horizontal = 10.dp)
+    return this.padding(horizontal = Density.Medium)
 }
