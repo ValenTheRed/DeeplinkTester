@@ -76,7 +76,7 @@ fun SearchScreen(
                     },
                     onBack = { navHostController.popBackStack() },
                     modifier = Modifier
-                        .padding(vertical = Density.Small)
+                        .padding(top = Density.Small, bottom = Density.Medium)
                         .appEdgePadding(pad = AppEdgeType.End)
                         .statusBarsPadding(),
                 )
