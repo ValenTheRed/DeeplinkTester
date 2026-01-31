@@ -58,17 +58,25 @@ fun App(
         modifier = Modifier.background(MaterialTheme.colorScheme.background),
         navController = navController,
         startDestination = "home",
+        // NOTE:
+        //  1. enter/exit work when navigation *to* a screen and pop
+        //  enter/exit work when navigation *back* from a screen.
+        //  2. Enter is for dst screen and exit is for src screen. Vice versa
+        //  for pop variations.
+        //  3. Offset for pop exit variation is the point till which
+        //  animation would take place. So, a `it/2` with fadeOut() pop exit
+        //  will have the fade out for half screen and then disappear entirely.
         enterTransition = {
-            slideInHorizontally(initialOffsetX = { 1000 }) + fadeIn()
+            slideInHorizontally(initialOffsetX = { it }) + fadeIn()
         },
         exitTransition = {
-            slideOutHorizontally(targetOffsetX = { -1000 }) + fadeOut()
+            slideOutHorizontally(targetOffsetX = { 0 }) + fadeOut()
         },
         popEnterTransition = {
-            slideInHorizontally(initialOffsetX = { -1000 }) + fadeIn()
+            slideInHorizontally(initialOffsetX = { 0 }) + fadeIn()
         },
         popExitTransition = {
-            slideOutHorizontally(targetOffsetX = { 1000 }) + fadeOut()
+            slideOutHorizontally(targetOffsetX = { it }) + fadeOut()
         }
     ) {
         composable("home") {
