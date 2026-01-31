@@ -2,20 +2,16 @@ package com.example.deeplinktester.ui.components
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -60,10 +56,12 @@ fun Input(
         }
     }
 
-    Column(
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
         modifier = modifier,
     ) {
-        TextField(
+        OutlinedTextField(
             value = value,
             onValueChange = {
                 value = it
@@ -73,7 +71,7 @@ fun Input(
                     text = stringResource(R.string.input_placeholder)
                 )
             },
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.weight(1f),
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Go
             ),
@@ -81,7 +79,9 @@ fun Input(
                 onGo = { onOpen() }
             ),
             trailingIcon = {
-                if (value.isNotEmpty()) {
+                if (value.isEmpty()) {
+                    return@OutlinedTextField
+                }
                     IconButton(
                         onClick = {
                             value = ""
@@ -94,17 +94,17 @@ fun Input(
                             ),
                         )
                     }
-                }
             }
         )
-        Spacer(Modifier.height(Density.Small))
-        Button(
-            enabled = value.isNotEmpty(),
+        Spacer(Modifier.width(Density.ExtraSmall))
+        IconButton (
             onClick = onOpen,
-            modifier = Modifier.fillMaxWidth(),
-            shape = MaterialTheme.shapes.large
+            modifier = Modifier.width(Density.IconSize)
         ) {
-            Text(stringResource(R.string.open))
+            Icon(
+                painterResource(R.drawable.go),
+                stringResource(R.string.open_deeplink)
+            )
         }
     }
 }

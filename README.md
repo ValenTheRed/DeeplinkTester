@@ -11,7 +11,7 @@
     1. [x] show the search history initially, rather than deeplinks
         1. don’t show anything at all if search history doesn’t seem right
 2. revamp the UI
-    1. replace the ‘Open Deeplink’ button with a inline button in the text input itself
+    1. [x] replace the ‘Open Deeplink’ button with a inline button in the text input itself
     3. a delete mode instead of delete button on each item
         1. delete > deeplinks become checkbox selectable > delete the required one
     4. restrict deeplinks to a set amount of lines. Introduce a chevron button inplace of copy/delete to expand/collapse the deeplink.
