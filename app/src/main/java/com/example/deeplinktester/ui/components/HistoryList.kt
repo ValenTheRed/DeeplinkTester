@@ -26,7 +26,10 @@ fun HistoryList(
             .appEdgePadding()
             .clip(MaterialTheme.shapes.large),
     ) {
-        itemsIndexed(data) { index, d ->
+        itemsIndexed(
+            items = data,
+            key = { _, v -> v }
+        ) { index, d ->
             itemContent(
                 d,
                 index,
