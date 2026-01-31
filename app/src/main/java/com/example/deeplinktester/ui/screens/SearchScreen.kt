@@ -118,7 +118,7 @@ fun SearchScreen(
                     is SearchResults.Queries -> SearchResultQuery(
                         result,
                         onDelete = { searchModel.delete(result) },
-                        onUndo = { searchModel.push(result) },
+                        onUndo = { searchModel.push(result, index) },
                         onClick = { searchModel.query = result },
                         modifier = modifier,
                     )
