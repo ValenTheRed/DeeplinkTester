@@ -19,6 +19,18 @@ object Density {
     val IconSize = 40.dp
 }
 
-fun Modifier.appEdgePadding(): Modifier {
-    return this.padding(horizontal = Density.Medium)
+sealed class AppEdgeType {
+    data object Start : AppEdgeType()
+    data object End : AppEdgeType()
+    data object All : AppEdgeType()
+}
+
+fun Modifier.appEdgePadding(
+    pad: AppEdgeType = AppEdgeType.All
+): Modifier {
+    return when (pad) {
+        AppEdgeType.Start -> this.padding(start = Density.Medium)
+        AppEdgeType.End -> this.padding(end = Density.Medium)
+        AppEdgeType.All -> this.padding(horizontal = Density.Medium)
+    }
 }
