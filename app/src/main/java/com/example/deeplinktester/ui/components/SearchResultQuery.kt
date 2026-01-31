@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,6 +25,7 @@ fun SearchResultQuery(
     query: String,
     onClick: () -> Unit,
     onDelete: () -> Unit,
+    onUndo: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val ctx = LocalContext.current
@@ -54,7 +56,16 @@ fun SearchResultQuery(
         IconButton(
             onClick = {
                 onDelete()
-                snackbar.show(ctx.resources.getString(R.string.search_query_deleted))
+                snackbar.show(
+                    ctx.resources.getString(R.string.search_query_deleted),
+                    ctx.resources.getString(R.string.undo),
+                    { r ->
+                        when (r) {
+                            SnackbarResult.Dismissed -> return@show
+                            SnackbarResult.ActionPerformed -> onUndo()
+                        }
+                    }
+                )
             },
         ) {
             Icon(
