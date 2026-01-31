@@ -104,16 +104,7 @@ fun Input(
             modifier = Modifier.fillMaxWidth(),
             shape = MaterialTheme.shapes.large
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(stringResource(R.string.open))
-                Spacer(Modifier.width(Density.ExtraSmall))
-                Icon(
-                    painterResource(R.drawable.go),
-                    stringResource(R.string.open_deeplink)
-                )
-            }
+            Text(stringResource(R.string.open))
         }
     }
 }
