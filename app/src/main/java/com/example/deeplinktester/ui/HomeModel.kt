@@ -13,6 +13,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 
+typealias Deeplinks = LinkedHashSet<String>
+
 class HomeModel(
     dataStore: DataStore<Preferences>,
     initialDeeplinks: Deeplinks = linkedSetOf(),
