@@ -17,6 +17,7 @@ object Density {
     val ExtraLarge = 28.dp
 
     val IconSize = 40.dp
+    val FilledIconSize = 56.dp
 }
 
 sealed class AppEdgeType {

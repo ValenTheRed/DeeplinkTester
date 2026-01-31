@@ -2,7 +2,6 @@
     <string name="app_name">Deeplink Tester</string>
     <string name="delete_deeplink">Delete deeplink</string>
     <string name="copy_deeplink">Copy deeplink</string>
-    <string name="open">Open</string>
     <string name="open_deeplink">Open</string>
     <string name="activity_not_found_exception_msg">No app exists for the deeplink</string>
     <string name="input_placeholder">deeplink://</string>
