@@ -67,7 +67,7 @@ fun SearchScreen(
             snackbarHostState = snackbarHostState,
             coroutineScope = rememberCoroutineScope(),
         )
-    CompositionLocalProvider(ActiveSnackbarController provides controller) {
+    CompositionLocalProvider(LocalActiveSnackbarController provides controller) {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             topBar = {

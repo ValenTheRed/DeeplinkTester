@@ -19,7 +19,7 @@ import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.example.deeplinktester.R
-import com.example.deeplinktester.ui.screens.ActiveSnackbarController
+import com.example.deeplinktester.ui.screens.LocalActiveSnackbarController
 import com.example.deeplinktester.ui.theme.Density
 
 @Composable
@@ -31,7 +31,7 @@ fun SearchResultQuery(
     modifier: Modifier = Modifier,
 ) {
     val resources = LocalResources.current
-    val snackbar = ActiveSnackbarController.current
+    val snackbar = LocalActiveSnackbarController.current
 
     Row(
         verticalAlignment = Alignment.CenterVertically,

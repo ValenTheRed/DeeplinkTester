@@ -42,7 +42,7 @@ import com.example.deeplinktester.ui.theme.AppEdgeType
 import com.example.deeplinktester.ui.theme.Density
 import com.example.deeplinktester.ui.theme.appEdgePadding
 
-val ActiveSnackbarController =
+val LocalActiveSnackbarController =
     compositionLocalOf<SnackbarController> {
         error("No snackbar controller found!")
     }
@@ -60,7 +60,7 @@ fun HomeScreen(
             snackbarHostState = snackbarHostState,
             coroutineScope = rememberCoroutineScope(),
         )
-    CompositionLocalProvider(ActiveSnackbarController provides controller) {
+    CompositionLocalProvider(LocalActiveSnackbarController provides controller) {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             topBar = {
