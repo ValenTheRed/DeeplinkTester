@@ -101,7 +101,7 @@ class SearchModel(
         _searchHistory.update { state ->
             val query = value ?: query.text.toString()
             if (query in state) {
-                state
+                return@update state
             }
             val list = state.toMutableList()
             list.add(index, query)
