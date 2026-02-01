@@ -27,7 +27,8 @@ typealias SearchQueries = LinkedHashSet<String>
 sealed class SearchResults {
     data class Queries(val queries: SearchQueries) : SearchResults()
     data class Links(val links: Deeplinks) : SearchResults()
-    data object Empty : SearchResults()
+    data object EmptyQueries : SearchResults()
+    data object EmptyLinks : SearchResults()
 }
 
 class SearchModel(
@@ -45,16 +46,25 @@ class SearchModel(
         _searchHistory
     ) { q, links, history ->
         if (q.isBlank()) {
-            SearchResults.Queries(history)
+            if (history.isEmpty()) {
+                SearchResults.EmptyQueries
+            } else {
+                SearchResults.Queries(history)
+            }
         } else {
-            SearchResults.Links(links.filterTo(LinkedHashSet()) {
+            val links = links.filterTo(LinkedHashSet()) {
                 it.contains(q, ignoreCase = true)
-            })
+            }
+            if (links.isEmpty()) {
+                SearchResults.EmptyLinks
+            } else {
+                SearchResults.Links(links)
+            }
         }
     }.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(5_000),
-        SearchResults.Empty
+        SearchResults.EmptyQueries
     )
 
     fun highlightDeeplink(deeplink: String, style: SpanStyle): AnnotatedString {

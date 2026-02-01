@@ -15,4 +15,5 @@
     <string name="deeplink_deleted">Deeplink deleted</string>
     <string name="undo">Undo</string>
     <string name="recent_search_query">Recent search query</string>
+    <string name="no_results_found">No results found</string>
 </resources>

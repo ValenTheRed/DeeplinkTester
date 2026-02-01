@@ -1,6 +1,7 @@
 package com.example.deeplinktester.ui.components
 
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -15,7 +16,7 @@ import com.example.deeplinktester.ui.theme.appEdgePadding
 fun HistoryList(
     data: Collection<String>,
     modifier: Modifier = Modifier,
-    itemContent: @Composable (
+    itemContent: @Composable LazyItemScope.(
         data: String,
         index: Int,
         modifier: Modifier,

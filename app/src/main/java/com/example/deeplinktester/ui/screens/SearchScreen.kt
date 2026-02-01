@@ -1,5 +1,6 @@
 package com.example.deeplinktester.ui.screens
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -36,7 +37,9 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.navigation.NavHostController
 import com.example.deeplinktester.R
@@ -92,7 +95,10 @@ fun SearchScreen(
         ) { innerPadding ->
             val searchResults = searchResults
             val results = when (searchResults) {
-                SearchResults.Empty -> listOf()
+                SearchResults.EmptyQueries -> listOf()
+                SearchResults.EmptyLinks -> listOf(
+                    stringResource(R.string.no_results_found)
+                )
                 is SearchResults.Links -> searchResults.links
                 is SearchResults.Queries -> searchResults.queries
             }
@@ -101,7 +107,23 @@ fun SearchScreen(
                 modifier = Modifier.padding(innerPadding),
             ) { result, index, modifier ->
                 when (searchResults) {
-                    SearchResults.Empty -> {}
+                    SearchResults.EmptyQueries -> {}
+                    SearchResults.EmptyLinks -> {
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = modifier
+                                .fillParentMaxSize()
+                                .imePadding(),
+                        ) {
+                            Text(
+                                result,
+                                textAlign = TextAlign.Center,
+                                style = MaterialTheme.typography.titleMedium,
+                                color = MaterialTheme.colorScheme.primary,
+                                fontWeight = FontWeight.Medium,
+                            )
+                        }
+                    }
 
                     is SearchResults.Links -> {
                         HistoryItem(
