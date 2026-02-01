@@ -18,6 +18,7 @@ class SnackbarController(
         onResult: ((r: SnackbarResult) -> Unit)? = null
     ) {
         scope.launch {
+            hostState.currentSnackbarData?.dismiss()
             val result = hostState.showSnackbar(
                 message = message,
                 actionLabel = actionLabel,
