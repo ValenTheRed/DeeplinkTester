@@ -39,7 +39,7 @@ class HomeModel(
     fun push(deeplink: String, index: Int = 0) {
         _deeplinks.update { state ->
             if (deeplink in state) {
-                state
+                return@update state
             }
             val list = state.toMutableList()
             list.add(index, deeplink)
