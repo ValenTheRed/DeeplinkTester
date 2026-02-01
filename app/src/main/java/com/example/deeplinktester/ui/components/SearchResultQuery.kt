@@ -3,8 +3,10 @@ package com.example.deeplinktester.ui.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -41,16 +43,24 @@ fun SearchResultQuery(
             )
             .background(MaterialTheme.colorScheme.surfaceContainerHigh),
     ) {
+        Box(
+            contentAlignment = Alignment.Center,
+            // NOTE: Occupy the same space as `IconButton` i.e. 40.dp Box
+            //  with 4.dp padding for a total of 48.dp.
+            modifier = Modifier
+                .padding(Density.ExtraSmall)
+                .size(Density.IconSize)
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.recent_search),
+                contentDescription = stringResource(R.string.recent_search_query),
+            )
+        }
         Text(
             text = query,
             modifier = Modifier
                 .weight(1f)
-                .padding(
-                    start = Density.Large,
-                    end = Density.Small,
-                    top = Density.Small,
-                    bottom = Density.Small,
-                ),
+                .padding(vertical = Density.Small),
             style = MaterialTheme.typography.bodyMedium,
         )
         IconButton(
