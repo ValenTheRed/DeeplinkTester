@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -37,6 +38,7 @@ fun HistoryItem(
 ) {
     val clipboardManager = LocalClipboardManager.current
     val ctx = LocalContext.current
+    val resources = LocalResources.current
     val snackbar = ActiveSnackbarController.current
 
     Row(
@@ -72,7 +74,7 @@ fun HistoryItem(
             onClick = {
                 // Only show a toast for Android 12 and lower.
                 if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) {
-                    snackbar.show(ctx.resources.getString(R.string.deeplink_copied))
+                    snackbar.show(resources.getString(R.string.deeplink_copied))
                 }
                 clipboardManager.setText(AnnotatedString(deeplink))
             },
@@ -91,12 +93,12 @@ fun HistoryItem(
                     onDelete()
                     if (onUndo == null) {
                         snackbar.show(
-                            ctx.resources.getString(R.string.deeplink_deleted),
+                            resources.getString(R.string.deeplink_deleted),
                         )
                     } else {
                         snackbar.show(
-                            ctx.resources.getString(R.string.deeplink_deleted),
-                            ctx.resources.getString(R.string.undo),
+                            resources.getString(R.string.deeplink_deleted),
+                            resources.getString(R.string.undo),
                             { r ->
                                 when (r) {
                                     SnackbarResult.Dismissed -> return@show

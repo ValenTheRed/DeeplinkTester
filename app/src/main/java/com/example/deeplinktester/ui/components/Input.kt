@@ -24,6 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -39,6 +40,7 @@ fun Input(
     modifier: Modifier = Modifier,
 ) {
     val ctx = LocalContext.current
+    val resources = LocalResources.current
     val snackbar = ActiveSnackbarController.current
     val scope = rememberCoroutineScope()
 
@@ -52,7 +54,7 @@ fun Input(
             onOpenDeeplink(value)
         } catch (_: ActivityNotFoundException) {
             snackbar.show(
-                ctx.resources.getString(
+                resources.getString(
                     R.string.activity_not_found_exception_msg
                 )
             )

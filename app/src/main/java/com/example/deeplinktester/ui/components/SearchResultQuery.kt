@@ -15,7 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.example.deeplinktester.R
@@ -30,7 +30,7 @@ fun SearchResultQuery(
     onUndo: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val ctx = LocalContext.current
+    val resources = LocalResources.current
     val snackbar = ActiveSnackbarController.current
 
     Row(
@@ -67,8 +67,8 @@ fun SearchResultQuery(
             onClick = {
                 onDelete()
                 snackbar.show(
-                    ctx.resources.getString(R.string.search_query_deleted),
-                    ctx.resources.getString(R.string.undo),
+                    resources.getString(R.string.search_query_deleted),
+                    resources.getString(R.string.undo),
                     { r ->
                         when (r) {
                             SnackbarResult.Dismissed -> return@show
