@@ -11,8 +11,8 @@
     <string name="search_deeplinks">Search deeplinks</string>
     <string name="go_back">Go Back</string>
     <string name="search">Search</string>
-    <string name="search_query_deleted">Search query deleted.</string>
-    <string name="deeplink_deleted">Deeplink deleted.</string>
+    <string name="search_query_deleted">Search query deleted</string>
+    <string name="deeplink_deleted">Deeplink deleted</string>
     <string name="undo">Undo</string>
     <string name="recent_search_query">Recent search query</string>
 </resources>
