@@ -14,6 +14,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
@@ -22,11 +26,13 @@ import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.core.net.toUri
 import com.example.deeplinktester.R
 import com.example.deeplinktester.ui.screens.LocalActiveSnackbarController
 import com.example.deeplinktester.ui.theme.Density
 import com.example.deeplinktester.utils.onlyApplyIf
+import kotlin.Int
 
 @Composable
 fun HistoryItem(
@@ -40,6 +46,8 @@ fun HistoryItem(
     val ctx = LocalContext.current
     val resources = LocalResources.current
     val snackbar = LocalActiveSnackbarController.current
+    var expanded by remember { mutableStateOf(false) }
+    var canOverflow by remember { mutableStateOf(false) }
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -59,6 +67,13 @@ fun HistoryItem(
             .background(MaterialTheme.colorScheme.surfaceContainerHigh),
     ) {
         Text(
+            maxLines = if (expanded) Int.MAX_VALUE else 10,
+            overflow = TextOverflow.Ellipsis,
+            onTextLayout = { result ->
+                if (result.didOverflowHeight) {
+                    canOverflow = true
+                }
+            },
             text = highlightedDeeplink ?: AnnotatedString(deeplink),
             modifier = Modifier
                 .weight(1f)
@@ -70,6 +85,26 @@ fun HistoryItem(
                 ),
             style = MaterialTheme.typography.bodyMedium,
         )
+        if (canOverflow) {
+            IconButton(
+                onClick = {
+                    expanded = !expanded
+                },
+                modifier = Modifier.size(Density.IconSize)
+            ) {
+                if (expanded) {
+                    Icon(
+                        painter = painterResource(R.drawable.collapse_content),
+                        contentDescription = stringResource(R.string.collapse_content),
+                    )
+                } else {
+                    Icon(
+                        painter = painterResource(R.drawable.expand_content),
+                        contentDescription = stringResource(R.string.expand_content),
+                    )
+                }
+            }
+        }
         IconButton(
             onClick = {
                 // Only show a toast for Android 12 and lower.
