@@ -76,6 +76,7 @@ fun Input(
                     text = stringResource(R.string.input_placeholder)
                 )
             },
+            maxLines = 10,
             modifier = Modifier.weight(1f),
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Go
