@@ -32,6 +32,7 @@ import androidx.core.net.toUri
 import com.example.deeplinktester.R
 import com.example.deeplinktester.ui.screens.LocalActiveSnackbarController
 import com.example.deeplinktester.ui.theme.Density
+import com.example.deeplinktester.ui.theme.MAX_TEXT_LINES
 import com.example.deeplinktester.utils.debounce
 
 @Composable
@@ -76,7 +77,7 @@ fun Input(
                     text = stringResource(R.string.input_placeholder)
                 )
             },
-            maxLines = 10,
+            maxLines = MAX_TEXT_LINES,
             modifier = Modifier.weight(1f),
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Go

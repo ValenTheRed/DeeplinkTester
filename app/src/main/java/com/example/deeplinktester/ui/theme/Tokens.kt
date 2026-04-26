@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
+val MAX_TEXT_LINES = 10
+
 object Density {
     /**
      * These mostly matche the values used by ShapeDefaults (ShapeTokens)

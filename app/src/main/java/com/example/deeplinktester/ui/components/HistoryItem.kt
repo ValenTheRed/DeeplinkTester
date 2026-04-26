@@ -31,6 +31,7 @@ import androidx.core.net.toUri
 import com.example.deeplinktester.R
 import com.example.deeplinktester.ui.screens.LocalActiveSnackbarController
 import com.example.deeplinktester.ui.theme.Density
+import com.example.deeplinktester.ui.theme.MAX_TEXT_LINES
 import com.example.deeplinktester.utils.onlyApplyIf
 import kotlin.Int
 
@@ -67,7 +68,7 @@ fun HistoryItem(
             .background(MaterialTheme.colorScheme.surfaceContainerHigh),
     ) {
         Text(
-            maxLines = if (expanded) Int.MAX_VALUE else 10,
+            maxLines = if (expanded) Int.MAX_VALUE else MAX_TEXT_LINES,
             overflow = TextOverflow.Ellipsis,
             onTextLayout = { result ->
                 if (result.didOverflowHeight) {
