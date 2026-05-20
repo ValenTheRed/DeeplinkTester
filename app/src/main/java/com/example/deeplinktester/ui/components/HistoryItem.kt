@@ -7,7 +7,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -32,7 +31,6 @@ import com.example.deeplinktester.R
 import com.example.deeplinktester.ui.screens.LocalActiveSnackbarController
 import com.example.deeplinktester.ui.theme.Density
 import com.example.deeplinktester.ui.theme.MAX_TEXT_LINES
-import com.example.deeplinktester.utils.onlyApplyIf
 import kotlin.Int
 
 @Composable
@@ -86,69 +84,69 @@ fun HistoryItem(
                 ),
             style = MaterialTheme.typography.bodyMedium,
         )
-        if (canOverflow) {
-            IconButton(
-                onClick = {
-                    expanded = !expanded
-                },
-                modifier = Modifier.size(Density.IconSize)
-            ) {
-                if (expanded) {
-                    Icon(
-                        painter = painterResource(R.drawable.collapse_content),
-                        contentDescription = stringResource(R.string.collapse_content),
-                    )
-                } else {
-                    Icon(
-                        painter = painterResource(R.drawable.expand_content),
-                        contentDescription = stringResource(R.string.expand_content),
-                    )
-                }
-            }
-        }
-        IconButton(
-            onClick = {
-                // Only show a toast for Android 12 and lower.
-                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) {
-                    snackbar.show(resources.getString(R.string.deeplink_copied))
-                }
-                clipboardManager.setText(AnnotatedString(deeplink))
-            },
-            modifier = Modifier
-                .size(Density.IconSize)
-                .onlyApplyIf(onDelete != null),
+        Row(
+            modifier = Modifier.align(Alignment.Top)
         ) {
-            Icon(
-                painter = painterResource(R.drawable.content_copy),
-                contentDescription = stringResource(R.string.copy_deeplink),
-            )
-        }
-        if (onDelete != null) {
-            IconButton(
-                onClick = {
-                    onDelete()
-                    if (onUndo == null) {
-                        snackbar.show(
-                            resources.getString(R.string.deeplink_deleted),
+            if (canOverflow) {
+                IconButton(
+                    onClick = {
+                        expanded = !expanded
+                    },
+                ) {
+                    if (expanded) {
+                        Icon(
+                            painter = painterResource(R.drawable.collapse_content),
+                            contentDescription = stringResource(R.string.collapse_content),
                         )
                     } else {
-                        snackbar.show(
-                            resources.getString(R.string.deeplink_deleted),
-                            resources.getString(R.string.undo),
-                            { r ->
-                                when (r) {
-                                    SnackbarResult.Dismissed -> return@show
-                                    SnackbarResult.ActionPerformed -> onUndo()
-                                }
-                            }
+                        Icon(
+                            painter = painterResource(R.drawable.expand_content),
+                            contentDescription = stringResource(R.string.expand_content),
                         )
                     }
+                }
+            }
+            IconButton(
+                onClick = {
+                    // Only show a toast for Android 12 and lower.
+                    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) {
+                        snackbar.show(resources.getString(R.string.deeplink_copied))
+                    }
+                    clipboardManager.setText(AnnotatedString(deeplink))
                 },
             ) {
                 Icon(
-                    painter = painterResource(R.drawable.delete),
-                    contentDescription = stringResource(R.string.delete_deeplink),
+                    painter = painterResource(R.drawable.content_copy),
+                    contentDescription = stringResource(R.string.copy_deeplink),
                 )
+            }
+            if (onDelete != null) {
+                IconButton(
+                    onClick = {
+                        onDelete()
+                        if (onUndo == null) {
+                            snackbar.show(
+                                resources.getString(R.string.deeplink_deleted),
+                            )
+                        } else {
+                            snackbar.show(
+                                resources.getString(R.string.deeplink_deleted),
+                                resources.getString(R.string.undo),
+                                { r ->
+                                    when (r) {
+                                        SnackbarResult.Dismissed -> return@show
+                                        SnackbarResult.ActionPerformed -> onUndo()
+                                    }
+                                }
+                            )
+                        }
+                    },
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.delete),
+                        contentDescription = stringResource(R.string.delete_deeplink),
+                    )
+                }
             }
         }
     }
