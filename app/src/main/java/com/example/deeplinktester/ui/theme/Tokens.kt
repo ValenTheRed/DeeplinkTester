@@ -18,6 +18,8 @@ object Density {
     val Large = 16.dp
     val ExtraLarge = 28.dp
 
+    val SearchInputMinHeight = 48.dp
+
     val IconSize = 40.dp
     val FilledIconSize = 56.dp
 }
