@@ -14,6 +14,7 @@
     1. [x] replace the ‘Open Deeplink’ button with a inline button in the text input itself
     3. a delete mode instead of delete button on each item
         1. delete > deeplinks become checkbox selectable > delete the required one
-    4. restrict deeplinks to a set amount of lines. Introduce a chevron button inplace of copy/delete to expand/collapse the deeplink.
-        1. remove delete and place the chevron to left of copy? Hide/show chevron only for required deeplinks?
+    4. [x] restrict deeplinks to a set amount of lines. ~Introduce a chevron button inplace of copy/delete to expand/collapse the deeplink.~
+        1. ~remove delete and place the chevron to left of copy? Hide/show chevron only for required deeplinks?~
+        2. [x] place the action button on their own `Row` below the deeplink.
     5. [x] wrap the whole list in a card ala One UI 7 lists in contacts app
