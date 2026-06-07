@@ -28,6 +28,7 @@ import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -43,6 +44,8 @@ import com.example.deeplinktester.ui.components.Input
 import com.example.deeplinktester.ui.theme.AppEdgeType
 import com.example.deeplinktester.ui.theme.Density
 import com.example.deeplinktester.ui.theme.appEdgePadding
+import kotlinx.coroutines.android.awaitFrame
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 val LocalActiveSnackbarController =
@@ -147,13 +150,25 @@ fun HomeScreen(
                     onUndo = {
                         homeModel.push(deeplink, index)
                         coroutineScope.launch {
-                            val itemInfo = listState.layoutInfo.visibleItemsInfo
-                            if (
-                                index == itemInfo.first().index ||
-                                index > itemInfo.last().index
-                            ) {
-                                listState.animateScrollToItem(index)
+                            val itemsBefore = listState.layoutInfo.totalItemsCount
+                            if (index in 1..<itemsBefore) {
+                                return@launch
                             }
+                            snapshotFlow {
+                                listState.layoutInfo.totalItemsCount ==
+                                        itemsBefore + 1
+                            }.first { it }
+                            /*
+                             * Magic for when deleting last item. This waits
+                             * for the item's `.animateItem()` to sort-of
+                             * complete before scrolling to it. Not perfect
+                             * but works better without as otherwise the last
+                             * item would suddenly appear.
+                             *
+                             * Doesn't affect the animation for first item.
+                             */
+                            awaitFrame()
+                            listState.animateScrollToItem(index)
                         }
                     },
                     modifier = modifier
