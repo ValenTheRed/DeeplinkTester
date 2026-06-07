@@ -117,7 +117,6 @@ fun HistoryItem(
             val buttonModifier = Modifier
                 .heightIn(minimumInteractiveComponentSize)
                 .clip(shape)
-                .weight(1f)
                 .background(MaterialTheme.colorScheme.surfaceContainerHigh)
 
             if (onDelete != null) {
@@ -143,6 +142,7 @@ fun HistoryItem(
                     },
                     shape = shape,
                     modifier = buttonModifier
+                        .weight(1f)
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.delete),
@@ -163,6 +163,7 @@ fun HistoryItem(
                     },
                     shape = shape,
                     modifier = buttonModifier
+                        .weight(1.25f)
                 ) {
                     if (expanded) {
                         Icon(
@@ -194,6 +195,7 @@ fun HistoryItem(
                 },
                 shape = shape,
                 modifier = buttonModifier
+                    .weight(1f)
             ) {
                 Icon(
                     painter = painterResource(R.drawable.content_copy),
