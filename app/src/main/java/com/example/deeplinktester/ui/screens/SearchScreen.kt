@@ -107,6 +107,10 @@ fun SearchScreen(
             }
             HistoryList(
                 data = results,
+                dividerThickness = when (searchResults) {
+                    is SearchResults.Links -> Density.ExtraSmall
+                    else -> Density.ExtraExtraSmall
+                },
                 modifier = Modifier.padding(innerPadding),
             ) { result, index, modifier ->
                 when (searchResults) {

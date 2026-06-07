@@ -20,4 +20,6 @@ object Shapes {
         )
 
     val OnlyListItem = RoundedCornerShape(Density.Large)
+
+    val ListItem = RoundedCornerShape(Density.ExtraSmall)
 }

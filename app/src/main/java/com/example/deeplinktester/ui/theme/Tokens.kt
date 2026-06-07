@@ -7,6 +7,8 @@ import androidx.compose.ui.unit.dp
 val MAX_TEXT_LINES = 10
 
 object Density {
+    val MinimumSmall = 1.dp
+
     /**
      * These mostly matche the values used by ShapeDefaults (ShapeTokens)
      * tokens.
@@ -20,6 +22,7 @@ object Density {
 
     val SearchInputMinHeight = 48.dp
 
+    val TextIconSize = 20.dp
     val IconSize = 40.dp
     val FilledIconSize = 56.dp
 }

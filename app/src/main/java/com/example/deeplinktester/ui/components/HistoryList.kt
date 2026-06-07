@@ -8,6 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.unit.Dp
 import com.example.deeplinktester.ui.theme.Density
 import com.example.deeplinktester.ui.theme.Shapes
 import com.example.deeplinktester.ui.theme.appEdgePadding
@@ -15,6 +16,7 @@ import com.example.deeplinktester.ui.theme.appEdgePadding
 @Composable
 fun HistoryList(
     data: Collection<String>,
+    dividerThickness: Dp,
     modifier: Modifier = Modifier,
     itemContent: @Composable LazyItemScope.(
         data: String,
@@ -44,13 +46,13 @@ fun HistoryList(
                         } else if (index == data.size - 1) {
                             Shapes.LastListItem
                         } else {
-                            MaterialTheme.shapes.extraSmall
+                            Shapes.ListItem
                         }
                     )
             )
             if (index < data.size - 1) {
                 HorizontalDivider(
-                    thickness = Density.ExtraExtraSmall,
+                    thickness = dividerThickness, //Density.ExtraSmall,
                     color = MaterialTheme.colorScheme.background,
                 )
             }

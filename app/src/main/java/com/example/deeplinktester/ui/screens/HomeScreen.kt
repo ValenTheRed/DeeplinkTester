@@ -114,6 +114,7 @@ fun HomeScreen(
         ) { innerPadding ->
             HistoryList(
                 data = deeplinks,
+                dividerThickness = Density.ExtraSmall,
                 modifier = Modifier.padding(innerPadding),
             ) { deeplink, index, modifier ->
                 HistoryItem(
