@@ -9,10 +9,12 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -54,6 +56,7 @@ import com.example.deeplinktester.ui.components.SearchResultQuery
 import com.example.deeplinktester.ui.theme.AppEdgeType
 import com.example.deeplinktester.ui.theme.Density
 import com.example.deeplinktester.ui.theme.appEdgePadding
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -63,11 +66,13 @@ fun SearchScreen(
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     val searchResults by searchModel.searchResults.collectAsState()
+    val coroutineScope = rememberCoroutineScope()
+    val listState = rememberLazyListState()
 
     val controller =
         SnackbarController(
             snackbarHostState = snackbarHostState,
-            coroutineScope = rememberCoroutineScope(),
+            coroutineScope = coroutineScope,
         )
     CompositionLocalProvider(LocalActiveSnackbarController provides controller) {
         Scaffold(
@@ -94,6 +99,23 @@ fun SearchScreen(
                     modifier = Modifier.imePadding(),
                 )
             },
+            floatingActionButton = {
+                if (!listState.canScrollBackward) {
+                    return@Scaffold
+                }
+                FloatingActionButton(
+                    onClick = {
+                        coroutineScope.launch {
+                            listState.animateScrollToItem(0)
+                        }
+                    },
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.scroll_to_top),
+                        contentDescription = stringResource(R.string.scroll_to_top),
+                    )
+                }
+            }
         ) { innerPadding ->
             val searchResults = searchResults
             val results = when (searchResults) {
@@ -112,6 +134,7 @@ fun SearchScreen(
                     else -> Density.ExtraExtraSmall
                 },
                 modifier = Modifier.padding(innerPadding),
+                state = listState,
             ) { result, index, modifier ->
                 when (searchResults) {
                     SearchResults.EmptyQueries -> {}

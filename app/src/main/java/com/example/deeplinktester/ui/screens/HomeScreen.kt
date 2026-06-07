@@ -11,7 +11,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -41,6 +43,7 @@ import com.example.deeplinktester.ui.components.Input
 import com.example.deeplinktester.ui.theme.AppEdgeType
 import com.example.deeplinktester.ui.theme.Density
 import com.example.deeplinktester.ui.theme.appEdgePadding
+import kotlinx.coroutines.launch
 
 val LocalActiveSnackbarController =
     compositionLocalOf<SnackbarController> {
@@ -55,10 +58,13 @@ fun HomeScreen(
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     val deeplinks by homeModel.deeplinks.collectAsState()
+    val coroutineScope = rememberCoroutineScope()
+    val listState = rememberLazyListState()
+
     val controller =
         SnackbarController(
             snackbarHostState = snackbarHostState,
-            coroutineScope = rememberCoroutineScope(),
+            coroutineScope = coroutineScope,
         )
     CompositionLocalProvider(LocalActiveSnackbarController provides controller) {
         Scaffold(
@@ -111,11 +117,29 @@ fun HomeScreen(
                     modifier = Modifier.imePadding(),
                 )
             },
+            floatingActionButton = {
+                if (!listState.canScrollBackward) {
+                    return@Scaffold
+                }
+                FloatingActionButton(
+                    onClick = {
+                        coroutineScope.launch {
+                            listState.animateScrollToItem(0)
+                        }
+                    },
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.scroll_to_top),
+                        contentDescription = stringResource(R.string.scroll_to_top),
+                    )
+                }
+            }
         ) { innerPadding ->
             HistoryList(
                 data = deeplinks,
                 dividerThickness = Density.ExtraSmall,
                 modifier = Modifier.padding(innerPadding),
+                state = listState,
             ) { deeplink, index, modifier ->
                 HistoryItem(
                     deeplink,

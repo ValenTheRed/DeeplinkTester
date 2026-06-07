@@ -18,4 +18,5 @@
     <string name="no_results_found">No results found</string>
     <string name="collapse_content">Collapse Deeplink</string>
     <string name="expand_content">Expand Deeplink</string>
+    <string name="scroll_to_top">Scroll To Top</string>
 </resources>
