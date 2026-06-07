@@ -69,16 +69,16 @@ fun App(
         //  animation would take place. So, a `it/2` with fadeOut() pop exit
         //  will have the fade out for half screen and then disappear entirely.
         enterTransition = {
-            slideInHorizontally(initialOffsetX = { it }) + fadeIn()
+            slideInHorizontally(initialOffsetX = { it })
         },
         exitTransition = {
-            slideOutHorizontally(targetOffsetX = { 0 }) + fadeOut()
+            slideOutHorizontally(targetOffsetX = { 0 })
         },
         popEnterTransition = {
-            slideInHorizontally(initialOffsetX = { 0 }) + fadeIn()
+            slideInHorizontally(initialOffsetX = { 0 })
         },
         popExitTransition = {
-            slideOutHorizontally(targetOffsetX = { it }) + fadeOut()
+            slideOutHorizontally(targetOffsetX = { it })
         }
     ) {
         composable("home") {
