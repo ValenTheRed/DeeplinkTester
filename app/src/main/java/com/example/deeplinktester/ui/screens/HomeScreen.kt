@@ -144,7 +144,18 @@ fun HomeScreen(
                 HistoryItem(
                     deeplink,
                     onDelete = { homeModel.delete(deeplink) },
-                    onUndo = { homeModel.push(deeplink, index) },
+                    onUndo = {
+                        homeModel.push(deeplink, index)
+                        coroutineScope.launch {
+                            val itemInfo = listState.layoutInfo.visibleItemsInfo
+                            if (
+                                index == itemInfo.first().index ||
+                                index > itemInfo.last().index
+                            ) {
+                                listState.animateScrollToItem(index)
+                            }
+                        }
+                    },
                     modifier = modifier
                 )
             }
