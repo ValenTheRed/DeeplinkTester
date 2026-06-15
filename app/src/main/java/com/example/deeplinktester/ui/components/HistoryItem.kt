@@ -62,7 +62,7 @@ fun HistoryItem(
     val shape = Shapes.ListItem
 
     Column(
-        verticalArrangement = Arrangement.spacedBy(Density.MinimumSmall),
+        verticalArrangement = Arrangement.spacedBy(Density.ExtraExtraSmall),
         modifier = modifier,
     ) {
         Row(
@@ -109,7 +109,7 @@ fun HistoryItem(
 //        )
         Row(
             horizontalArrangement = Arrangement
-                .spacedBy(Density.MinimumSmall),
+                .spacedBy(Density.ExtraExtraSmall),
             modifier = Modifier
                 .fillMaxWidth()
                 .height(IntrinsicSize.Min)
