@@ -20,6 +20,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -104,15 +105,13 @@ fun HistoryItem(
                 style = MaterialTheme.typography.bodyMedium,
             )
         }
-//        HorizontalDivider(
-//            color = MaterialTheme.colorScheme.background,
-//        )
         Row(
-            horizontalArrangement = Arrangement
-                .spacedBy(Density.ExtraExtraSmall),
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(IntrinsicSize.Min)
+                .clip(shape)
+                .background(MaterialTheme.colorScheme.surfaceContainerHigh)
         ) {
             val buttonModifier = Modifier
                 .heightIn(minimumInteractiveComponentSize)
@@ -152,9 +151,11 @@ fun HistoryItem(
                     Spacer(modifier = Modifier.size(Density.ExtraSmall))
                     Text(text = "Delete")
                 }
-//                VerticalDivider(
-//                    color = MaterialTheme.colorScheme.background,
-//                )
+                VerticalDivider(
+                    color = MaterialTheme.colorScheme.outline,
+                    modifier = Modifier
+                        .height(minimumInteractiveComponentSize - Density.Medium)
+                )
             }
             if (canOverflow) {
                 TextButton(
@@ -181,9 +182,11 @@ fun HistoryItem(
                     Spacer(modifier = Modifier.size(Density.ExtraSmall))
                     Text(text = if (expanded) "Read Less" else "Read More")
                 }
-//                VerticalDivider(
-//                    color = MaterialTheme.colorScheme.background,
-//                )
+                VerticalDivider(
+                    color = MaterialTheme.colorScheme.outline,
+                    modifier = Modifier
+                        .height(minimumInteractiveComponentSize - Density.Medium)
+                )
             }
             TextButton(
                 onClick = {
