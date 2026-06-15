@@ -117,9 +117,9 @@ fun HistoryItem(
             val buttonModifier = Modifier
                 .heightIn(minimumInteractiveComponentSize)
                 .clip(shape)
-                .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+            val showDeleteButton = onDelete != null
 
-            if (onDelete != null) {
+            if (showDeleteButton) {
                 TextButton(
                     onClick = {
                         onDelete()
@@ -163,7 +163,7 @@ fun HistoryItem(
                     },
                     shape = shape,
                     modifier = buttonModifier
-                        .weight(1.25f)
+                        .weight(if (showDeleteButton) 1.25f else 1f)
                 ) {
                     if (expanded) {
                         Icon(
