@@ -35,6 +35,7 @@ class SearchModel(
     dataStore: DataStore<Preferences>,
     deeplinks: StateFlow<Deeplinks>,
     initialSearchHistory: SearchQueries = linkedSetOf(),
+    val deleteDeeplink: (String) -> Unit = {},
 ) : ViewModel() {
     private val _dataStore = dataStore
     private val _searchHistory = MutableStateFlow(initialSearchHistory)

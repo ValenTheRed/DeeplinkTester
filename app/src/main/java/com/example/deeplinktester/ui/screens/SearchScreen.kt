@@ -165,6 +165,7 @@ fun SearchScreen(
                                     textDecoration = TextDecoration.Underline,
                                 )
                             ),
+                            onDelete = { searchModel.deleteDeeplink(result) },
                             modifier = modifier,
                         )
                     }
