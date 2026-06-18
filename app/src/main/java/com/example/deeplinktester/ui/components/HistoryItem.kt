@@ -63,15 +63,14 @@ fun HistoryItem(
     val shape = Shapes.ListItem
 
     Column(
-        verticalArrangement = Arrangement.spacedBy(Density.ExtraExtraSmall),
-        modifier = modifier,
+        modifier = modifier
+            .clip(shape),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
                 .heightIn(minimumInteractiveComponentSize)
-                .clip(shape)
                 .clickable(
                     enabled = true,
                     onClick = {
@@ -110,7 +109,6 @@ fun HistoryItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(IntrinsicSize.Min)
-                .clip(shape)
                 .background(MaterialTheme.colorScheme.surfaceContainerHigh)
         ) {
             val buttonModifier = Modifier
